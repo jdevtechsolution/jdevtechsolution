@@ -282,47 +282,96 @@
 		
 		<!---/invoice modal--->
 		<div class="modal fade" id="customer_modal" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog"  style="width:70%;">
+                                <div class="modal-dialog"  style="width:50%;">
                                 <div class="modal-content animated bounceInRight">
                                         
 										
 										
-                                        <div class="modal-body"><!--/modal body-->
-											<div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
-												<ul id="tab-content" class="nav nav-tabs" style="margin-left:10px;margin-right:10px;">
-													<li class="active">
-														<a href="#create_invoice" data-toggle="tab">
-															<label class="modal_label"><i class="fa fa-clipboard"></i> Customer Information</label>
-														</a>
-													</li>
-													</ul>
-													
-													<div id="tabs" class="tab-content"  style="margin-left:10px;margin-right:10px;"><!-- /tab contents -->
-														<div class="tab-pane fade in active" id="create_invoice" style="border-bottom:1px solid #d5d4d4;border-right:1px solid #d5d4d4;border-left:1px solid #d5d4d4;padding:15px;">
+                                        <div class="modal-body"><!--/modal body-->					
+											<div class="x_panel"><!--/panel-->
+												<div class="x_title">
+													<h2>Customer Information <small>Please enter Customer Information.</small></h2>
+														<!--/<ul class="nav navbar-right panel_toolbox">  -->
+														<!--/	<li><a class="collapse-link">  -->
+														<!--/		<i class="fa fa-chevron-up"></i></a>  -->
+														<!--/	</li>										  -->
+														<!--/	<li><a data-dismiss="modal"><i class="fa fa-close"></i></a>  -->
+														<!--/	</li>  -->
+														<!--/</ul> -->
+													<div class="clearfix"></div>
+												</div>
+
+												<div class="x_content"><!--/panel content-->
+														<form id="frm-customer">
 															<div class="row">
-																
-																	<div class="col-lg-5"><!--column-->
-																			<div class="panel panel-primary" style="padding:10px;">
-																				<div class="form-group">
-																					<label>C<u>u</u>stomer *</label>
-																					<select id="customer_dropdown" style="color:white;" name="customer" class="selectpicker show-tick form-control" data-live-search="true">
-																						<option>Paul Christian Rueda</option>
-																					</select>
-																				</div>
-																			</div>	
-																	</div><!--column-->
+														
+																<div class="col-md-6 col-sm-6 col-xs-6"><!--/column 2-->
+																	<div class="form-group">	
+																		<label>Firstname *</label>	
+																		<input name="firstname" type="text" class="form-control" data-message="Please make sure you enter Firstname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Firstname here." required>
+																	</div>
 																	
-																
-															</div>
+																	<div class="form-group">	
+																		<label>Lastname</label>	
+																		<input name="lastname" type="text" class="form-control">
+																	</div>
+																	
+																	<div class="form-group">	
+																		<label>Middlename</label>	
+																		<input name="middlename" type="text" class="form-control">
+																	</div>
+																	
+																	<div class="form-group">	
+																		<label>Address</label>	
+																		<textarea name="address" class="form-control"></textarea>
+																	</div>
+																	<div class="form-group">	
+																		<label>Email Address</label>	
+																		<input name="email" type="text" class="form-control">
+																	</div>
+																	
+																</div><!--/column 1-->
 															
-														</div>
+																<div class="col-md-6 col-sm-6 col-xs-6"><!--/column 2-->
+																	
+																	<div class="form-group">	
+																		<label>Billing Address</label>	
+																		<textarea name="billing_address" class="form-control"></textarea>
+																	</div>
+																	
+																	<div class="form-group">	
+																		<label>Contact No.</label>	
+																		<input name="pri_contact" type="text" class="form-control">
+																	</div>
+																	<div class="form-group">	
+																		<label>Contact No. (Alternative)</label>	
+																		<input name="sec_contact" type="text" class="form-control">
+																	</div>
+
+																	<div class="form-group">	
+																		<label>Company Name</label>	
+																		<input name="company" type="text" class="form-control">
+																	</div>
+																	
+																	<br />
+																	<div class="form-group">
+																		<label>
+																			<input type="checkbox" class="flat" checked="checked" name="is_active"> Active
+																		</label>
+																	</div>
+																	
+																	
 														
-														
-													</div><!-- /tab contents -->
-												
-											</div>	<!--/row-->	
-                                        </div><!--/modal body-->
-										
+																		
+																	
+																</div><!--/column 2-->
+															
+															</div>
+														</form>
+												</div><!--/content-->
+											</div><!--/panel-->
+										</div><!--/modal body-->
+
                                         <div class="modal-footer">   
                                             <button id="btn_create_invoice" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Invoice </button>
 											<button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
