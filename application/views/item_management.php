@@ -29,9 +29,14 @@
 	
    
 	<style>
-		.toolbar{			
+		.toolbar , .new_category , .new_unit{
 			float: left;
 		}
+
+        .period{
+            float: left;
+            margin-bottom: 10px;
+        }
 
 		[contenteditable="true"]:active,
 		[contenteditable="true"]:focus{
@@ -40,6 +45,8 @@
 			
 			background: white;
 		}
+
+        #tbl_item_list > tbody > tr:hover { cursor: pointer; cursor: hand; }
 	</style>
 </head>
 
@@ -63,7 +70,8 @@
 		
 		
         <div class="wrapper wrapper-content"><!-- /main content area -->
-				<div class="row">
+
+				<div class="row"><!-- /content area/ 1st row-->
 					
 					<div class="col-lg-8 animated fadeInRight">
 							<div class="mail-box-header" style="margin-bottom:-25px;">
@@ -78,24 +86,28 @@
 									<div class="panel-options">									
 										<ul class="nav nav-tabs">
 											<li class="active"><a data-toggle="tab" href="#tab-1">List of Item</a></li>
-											<li class=""><a data-toggle="tab" href="#tab-2">Item History</a></li>
-											<li class=""><a data-toggle="tab" href="#tab-3">Inventory</a></li>
-										</ul>
+											<li class=""><a data-toggle="tab" href="#tab-2">Item History <strong class="text-navy"> [ Intel Octa Core 3.2Ghz ] </strong></a></li>
+                                            <li class=""><a data-toggle="tab" href="#tab-3">References</a></li>
+
+                                        </ul>
 									</div>
 								</div>
 
 								<div class="panel-body">
 
 									<div class="tab-content">
+
+                                        <!-- /tab 1 -->
 										<div id="tab-1" class="tab-pane active">
 												<table id="tbl_item_list" class="table table-bordered">
 													<thead>
 														<tr>
 															<td></td>																												
-															<td>Item</td>
+															<td>Item #</td>
 															<td>Item Description</td>
 															<td>Category</td>
 															<td style="text-align:right;">On Hand</td>
+                                                            <td>Action</td>
 														</tr>
 													</thead>
 													<tbody>
@@ -106,28 +118,30 @@
 															<td>Intel Octa Core 3.2Ghz</td>
 															<td>Computer Parts</td>
 															<td align="right">150 pcs</td>
+                                                            <td></td>
 														</tr>
 														<?php } ?>
 													</tbody>
 												</table>	
-										</div>
-										
+										</div><!-- /tab 1 -->
+
+                                        <!-- /tab 2 -->
 										<div id="tab-2" class="tab-pane">
-												<table id="" class="table table-bordered">
+												<table id="tbl_item_history" class="table table-bordered">
 													<thead>
 														<tr>
-															<td></td>																												
+															<td>Txn Date</td>
 															<td>Invoice #</td>
-															<td>Receipt #</td>
-															<td>Debit</td>
-															<td>Credit</td>
+															<td>Remarks</td>
+															<td>Stock In</td>
+															<td>Stock Out</td>
 															<td>Balance</td>
 														</tr>
 													</thead>
 													<tbody>
 														<?php for($i=0;$i<=10;$i++){ ?>
 														<tr>
-															<td><input type="checkbox"></td>
+															<td>Nov 24, 2015</td>
 															<td>2015101000001</td>
 															<td>na</td>
 															<td>1,200.00</td>
@@ -137,35 +151,96 @@
 														<?php } ?>
 													</tbody>
 												</table>	
-										</div>
-										
-										
-										<div id="tab-3" class="tab-pane">
-												<table id="tbl_customer_ledger" class="table table-bordered">
-													<thead>
-														<tr>																																						
-															<td>Status</td>
-															<td>Txn Date</td>
-															<td>Invoice #</td>
-															<td>Remarks</td>
-															<td>Invoice Amount</td>											
-															
-														</tr>
-													</thead>
-													<tbody>
-														<?php for($i=0;$i<=10;$i++){ ?>
-														<tr>
-															<td><span class="pie">Open</span></td>
-															<td>11/10/2015</td>
-															<td>2015101000001</td>
-															<td>Sales on Nov 11. 2015.</td>															
-															<td>0.00</td>
-															<td>1,200.00</td>
-														</tr>
-														<?php } ?>
-													</tbody>
-												</table>	
-										</div>
+										</div><!-- /tab 2 -->
+
+                                        <!-- /tab 3 -->
+                                        <div id="tab-3" class="tab-pane">
+
+                                            <div class="bs-example">
+                                                <div class="panel-group" id="accordion">
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><i class="fa fa-inbox"></i> Category Management</a>
+                                                            </h4>
+                                                        </div>
+
+                                                        <div id="collapseOne" class="panel-collapse collapse in">
+                                                            <div class="panel-body">
+
+                                                                <table id="tbl_category_list" class="table table-bordered">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td>Category</td>
+                                                                        <td>Description</td>
+                                                                        <td>Status</td>
+                                                                        <td>Action</td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <?php for($i=0;$i<=10;$i++){ ?>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>Category</td>
+                                                                            <td>Description</td>
+                                                                            <td>Status</td>
+                                                                            <td>Action</td>
+
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><i class="fa fa-th-large"></i> Unit Management</a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseTwo" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <table id="tbl_unit_list" class="table table-bordered">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td>Unit</td>
+                                                                        <td>Description</td>
+                                                                        <td>Status</td>
+                                                                        <td>Action</td>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <?php for($i=0;$i<=10;$i++){ ?>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td>Unit</td>
+                                                                            <td>Description</td>
+                                                                            <td>Status</td>
+                                                                            <td>Action</td>
+
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div><!-- /tab 3 -->
+
+
+
 									</div>
 								</div>
 							</div>
@@ -173,6 +248,8 @@
 					</div>
 					
 					<div class="col-lg-4">
+
+                        <!-- /item details on right -->
 						<div class="contact-box  animated fadeInRight">
 
                             <div class="row">
@@ -208,7 +285,7 @@
                                                     <i class="fa fa-th-large"></i> <strong>Ideal Qty :</strong> <br />12
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <i class="fa fa-th-large"></i> <strong>Min Qty :</strong> <br />2
+                                                    <i class="fa fa-th-large"></i> <strong>Warn Qty :</strong> <br />2
                                                 </div>
                                             </div>
 
@@ -236,14 +313,12 @@
 								
 								
 
-						</div>						
+						</div><!-- /item details on right -->
 						
 					</div>
-					
 
+				</div><!-- /content area/ 1st row-->
 
-
-				</div>
         </div><!-- /main content area -->
 		
 		<!-- /footer -->
@@ -259,6 +334,7 @@
 		<div class="modal fade" id="item_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog"  style="width:50%;">
                 <div class="modal-content animated bounceInRight">
+
                     <div class="modal-body">
                         <div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
                             <div class="col-lg-12">
@@ -381,18 +457,7 @@
 
     <script src="assets/js/defined/item.management.event.handlers.js"></script>
 
-	<script>
-		$(document).ready(function(){
-			$("#sparkline8").sparkline([2,5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 14, 4, 2, 14, 12, 7,5,4,3,4], {
-				type: 'bar',
-				barWidth: 8,
-				height: '80px',
-				barColor: '#1ab394',
-				negBarColor: '#c6c6c6'});
-				
-			});
-		
-	</script>
+
 </body>
 
 </html>
