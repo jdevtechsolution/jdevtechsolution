@@ -32,12 +32,7 @@
 		.toolbar{			
 			float: left;
 		}
-		
-		.tools {
-			float: left;
-			margin-bottom:5px;
-		}
-		
+
 		[contenteditable="true"]:active,
 		[contenteditable="true"]:focus{
 			border:3px solid #F5C116;
@@ -93,7 +88,7 @@
 
 									<div class="tab-content">
 										<div id="tab-1" class="tab-pane active">
-												<table id="tbl_invoice_list" class="table table-bordered">
+												<table id="tbl_item_list" class="table table-bordered">
 													<thead>
 														<tr>
 															<td></td>																												
@@ -104,7 +99,7 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php for($i=0;$i<=55;$i++){ ?>
+														<?php for($i=0;$i<=10;$i++){ ?>
 														<tr>
 															<td><input type="checkbox"></td>
 															<td>10001</td>
@@ -118,7 +113,7 @@
 										</div>
 										
 										<div id="tab-2" class="tab-pane">
-												<table id="tbl_customer_ledger" class="table table-bordered">
+												<table id="" class="table table-bordered">
 													<thead>
 														<tr>
 															<td></td>																												
@@ -179,95 +174,75 @@
 					
 					<div class="col-lg-4">
 						<div class="contact-box  animated fadeInRight">
-							<a href="#">
-								<div class="col-sm-4">
-									<div class="text-center">
-										<img alt="image" class="img-circle m-t-xs img-responsive" src="assets/img/profile_small.jpg">
-										<div class="m-t-xs font-bold">Software Developer</div>
-									</div>
-								</div>
-								<div class="col-sm-8">
-									<h3><strong>Christian Rueda</strong></h3>
-									<p><i class="fa fa-archive"></i> JDEV IT Business Solution</p><br>
-									
-									<address>
-										<i class="fa fa-map-marker"></i> San Jose, San Simon, Pampanga<br>
-										<i class="fa fa-map-marker"></i> chrisrueda14@yahoo.com<br>
-										<i class="fa fa-list-alt"></i> 322-3542<br>																	
-									</address>
-								</div>
+
+                            <div class="row">
+                                    <div class="col-sm-12 ">
+                                            <div class="row">
+                                                <div class="col-sm-12 ">
+                                                    <h3><i class="fa fa-cubes"></i> Intel CPU Octa core 3.2Ghz</h3><br>
+                                                    <center><img class="img-responsive" style="width:120px;" src="assets/img/items/1.jpg"></center>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-gift"></i> <strong>Category :</strong> <br />Computer Parts<br /><br />
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-th-large"></i> <strong>On Hand :</strong> <br />10 pcs
+                                                </div>
+                                            </div>
+                                        <hr >
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-dollar"></i> <strong>Selling Price :</strong>  <br />3,500.00 Php
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-dollar"></i> <strong>Purchase Cost :</strong> <br /> 3,000.00 Php
+                                                </div>
+                                            </div>
+
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-th-large"></i> <strong>Ideal Qty :</strong> <br />12
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <i class="fa fa-th-large"></i> <strong>Min Qty :</strong> <br />2
+                                                </div>
+                                            </div>
+
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <i class="fa fa-th-large"></i> <strong>Other Description 1 :</strong> <br />Description 1
+                                                </div>
+                                            </div>
+
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <i class="fa fa-th-large"></i> <strong>Other Description 2 :</strong> <br />Description 2
+                                                </div>
+                                            </div>
+                                            <hr>
+                                    </div>
+                            </div><br><br>
+
+
+							<div class="text-right">
+									<a class="btn btn-xs btn-white"><i class="fa fa-pencil"></i> Edit Product Information </a>
+							</div>
 								
-								<div class="text-right">									
-									<a class="btn btn-xs btn-white"><i class="fa fa-pencil"></i> Edit Customer Info </a>
-									<a class="btn btn-xs btn-white"><i class="fa fa-credit-card"></i> Post Payment </a>													
-								</div>
 								
-								
-							</a>
+
 						</div>						
 						
 					</div>
 					
-					<div class="col-lg-4">
-						<div class="contact-box  animated fadeInRight" style="padding:10px;">
-						
-							<div class="panel-heading">                            
-									<div class="panel-options">									
-										<ul class="nav nav-tabs">
-											<li class="active"><a data-toggle="tab" href="#tab-invoice-1">Open Invoices</a></li>
-											<li class=""><a data-toggle="tab" href="#tab-invoice-2">Invoice Details</a></li>
-										</ul>
-									</div>
-							</div>
-						
-							<div class="panel-body">
-									<div class="tab-content">
-										<div id="tab-invoice-1" class="tab-pane active">
-											<div class="row">
-												<div class="col-xs-12">
-													<span>Total Open Invoice</span>
-													<h2>$ 1,231,809</h2>										
-													<div class="text-center m">
-														<span id="sparkline8"></span>
-													</div>    
-												</div>
-											</div>
-											
-											<br />
-											<div class="row">
-												<div class="col-xs-12">
-													<table id="tbl_past_due" class="table table-bordered">							
-														<thead>
-															<tr>
-																<td>Invoice #</td>																
-																												
-																<td>Balance</td>
-															</tr>
-														</thead>
-														<tbody>
-															<?php for($i=0;$i<=5;$i++){ ?>
-																<tr>
-																	<td><?php echo $i; ?></td>																			
-																	
-																	<td>1,000,000.00</td>
-																</tr>
-															<?php } ?>
-														</tbody>
-													</table>	
-												</div>
-											</div>
-										</div>
-										
-										<div id="tab-invoice-2" class="tab-pane">
-											
-										</div>
-									</div>
-								</div>
-						
-						
-							
-						</div>
-					</div>
+
+
+
 				</div>
         </div><!-- /main content area -->
 		
@@ -281,157 +256,101 @@
 		
 		
 		<!---/invoice modal--->
-		<div class="modal fade" id="invoice_modal" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog"  style="width:70%;">
-                                <div class="modal-content animated bounceInRight">
-                                        
-										
-										
-                                        <div class="modal-body"><!--/modal body-->
-											<div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
-												<ul id="tab-content" class="nav nav-tabs" style="margin-left:10px;margin-right:10px;">
-													<li class="active">
-														<a href="#create_invoice" data-toggle="tab">
-															<label class="modal_label"><i class="fa fa-clipboard"></i> Create Invoice</label>
-														</a>
-													</li>
-													</ul>
-													
-													<div id="tabs" class="tab-content"  style="margin-left:10px;margin-right:10px;"><!-- /tab contents -->
-														<div class="tab-pane fade in active" id="create_invoice" style="border-bottom:1px solid #d5d4d4;border-right:1px solid #d5d4d4;border-left:1px solid #d5d4d4;padding:15px;">
-															<div class="row">
-																
-																	<div class="col-lg-5"><!--column-->
-																			<div class="panel panel-primary" style="padding:10px;">
-																				<div class="form-group">
-																					<label>C<u>u</u>stomer *</label>
-																					<select id="customer_dropdown" style="color:white;" name="customer" class="selectpicker show-tick form-control" data-live-search="true">
-																						<option>Paul Christian Rueda</option>
-																					</select>
-																				</div>
-																			</div>	
-																	</div><!--column-->
-																	<div class="col-lg-4"></div>
-																	<div class="col-lg-3">
-																		<div class="panel panel-primary" style="padding:10px;">
-																			<div class="form-group" id="data_1">
-																				<label class="font-noraml"><u>D</u>ate Due *</label>
-																				<div class="input-group date" id="dt_due_date">
-																					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014">
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																
-															</div>
-															
-															<div class="row">
-																	<div class="col-lg-12">
-																		<div class="panel panel-primary" style="padding:15px 10px 0px 10px;margin-top:-12px;">
-																			<div class="form-group">																		
-																				<div class="input-group">																			
-																					<input type="text" id="plu_typehead" data-provide="typeahead" class="form-control" placeholder="Enter PLU or Desription / Press F2 to Browse Item List"> 
-																					<span class="input-group-btn">																				
-																						<button type="button" class="btn btn-primary">Browse List</button>
-																					</span>
-																					
-																				</div>
-																			</div>
-																		</div>
-																		
-																		<div class="panel panel-primary" style="padding:10px;margin-top:-12px;">
-																			<table id="tbl_item_cart" class="table table-bordered">
-																				<thead>
-																					<tr>
-																						<td>Qty</td>
-																						<td>Description</td>
-																						<td>Discount</td>
-																						<td>Unit Price</td>																				
-																						<td>Total</td>
-																						<td>Action</td>
-																					</tr>
-																				</thead>
-																				<tbody>
-																					
-																				</tbody>
-																				
-																				<tfoot>
-																					<tr>
-																						<td colspan="2" align="right"><strong>Total Discount</strong></td>
-																						<td align="right" style="color:red;"><strong>0.00</strong></td>																		
-																						<td align="right"><strong>Total Invoice</strong></td>																						
-																						<td align="right" style="color:red;"><strong>0.00</strong></td>
-																						<td></td>
-																					</tr>
-																				</tfoot>
-																			</table>
-																		</div>
-																	</div>
-															</div>
-															
-															
-															<div class="row">
-																<div class="col-lg-12" style="">
-																	
-																	
-																		 <div class="panel-heading" style="margin-left:-15px;margin-top:-20px;">
-																			
-																			<div class="panel-options">
+		<div class="modal fade" id="item_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog"  style="width:50%;">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-body">
+                        <div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
+                            <div class="col-lg-12">
+                                <div class="panel panel-default" style="margin-bottom:-20px;border-radius:0px;">
 
-																				<ul class="nav nav-tabs">
-																					<li class="active"><a data-toggle="tab" href="#tab-modal-1"><u>B</u>ill to Address *</a></li>
-																					<li class=""><a data-toggle="tab" href="#tab-modal-2">S<u>h</u>ipping Address</a></li>
-																					<li class=""><a data-toggle="tab" href="#tab-modal-3">Re<u>m</u>arks</a></li>
-																				</ul>
-																			</div>
-																		</div>
-																		
-																		<div class="panel-body">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Item Management<small class="m-l-sm">Please enter Item Information.</small></h5>
+                                            <div class="ibox-tools">
 
-																				<div class="tab-content">
-																					<div id="tab-modal-1" class="tab-pane active">
-																						<div class="form-group" style="margin-top:-10px;">
-																							<textarea class="form-control"></textarea>
-																						</div>
-																					</div>
+                                                <a data-dismiss="modal">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </div>
+                                        </div>
 
-																					<div id="tab-modal-2" class="tab-pane">
-																						<div class="form-group" style="margin-top:-10px;">
-																							<textarea class="form-control"></textarea>
-																						</div>
-																					</div>
-																					
-																					<div id="tab-modal-3" class="tab-pane">
-																						<div class="form-group" style="margin-top:-10px;">
-																							<textarea class="form-control"></textarea>
-																						</div>
-																					</div>
-																				</div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Item # *</label>
+                                                        <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Item number is required.">
+                                                    </div>
 
-																		</div>
-																	
-																	
-																	
-																	
-																</div>
-																
-																
-																
-															</div>
-														</div>
-														
-														
-													</div><!-- /tab contents -->
-												
-											</div>	<!--/row-->	
-                                        </div><!--/modal body-->
-										
-                                        <div class="modal-footer">   
-                                            <button id="btn_create_invoice" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Invoice </button>
-											<button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
+                                                    <div class="form-group">
+                                                        <label>Item Description *</label>
+                                                        <input class="form-control" type="text" name="user_code"  data-container="body" data-trigger="manual" data-toggle="tooltip" title="Item Description is required.">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Unit *</label>
+                                                        <select id="cbo_unit" style="color:white;" name="unit" class="selectpicker show-tick form-control" data-live-search="true"  data-message="Please make sure you enter unit." title="Please select unit." required>
+                                                            <option value="1">kg</option>
+                                                            <option value="2">mg</option>
+                                                            <option value="3">pcs</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Purchase Cost </label>
+                                                        <input class="form-control" type="number" name="user_code">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Selling Price</label>
+                                                        <input class="form-control" type="number" name="user_code">
+                                                    </div>
+
+
+                                                </div>
+
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label>Ideal Qty </label>
+                                                        <input class="form-control" type="number" name="user_code">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Warn Qty</label>
+                                                        <input class="form-control" type="number" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Employee number is required.">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Other Description 1</label>
+                                                        <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Employee number is required.">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Other Description 2 </label>
+                                                        <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Employee number is required.">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Other Description 3 </label>
+                                                        <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Employee number is required.">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>	<!--/row-->
+
+
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button id="btn_save_changes" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>S</u>ave Changes </button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
+                    </div>
+
+                </div>
+            </div>
         </div><!---/invoice modal--->
 		
 		
@@ -459,8 +378,9 @@
 	
 	<!-- Peity -->
     <script src="assets/js/plugins/peity/jquery.peity.min.js"></script>
-	
-    <script src="assets/js/defined/sales.invoice.event.handlers.js"></script>
+
+    <script src="assets/js/defined/item.management.event.handlers.js"></script>
+
 	<script>
 		$(document).ready(function(){
 			$("#sparkline8").sparkline([2,5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 14, 4, 2, 14, 12, 7,5,4,3,4], {
