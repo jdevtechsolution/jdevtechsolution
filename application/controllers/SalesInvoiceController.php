@@ -11,11 +11,11 @@ class SalesInvoiceController extends CI_Controller {
     }
 	
 	function index(){		// the default function that is called if no function is given in the uri
-		$data['customers']=$this->CustomerManagementModel->ReturnCustomerList();		
+		$data['customers']=$this->CustomerManagementModel->ReturnCustomerList();
 		$this->load->view('sales_invoice',$data);	
 	}
 	
-	function ActionGetProductList(){ //returns returns array of object of products
+	function ActionGetProductList(){ //returns returns array of object of product
 		echo json_encode($this->SalesInvoiceModel->ReturnProductList());
 	}
 	

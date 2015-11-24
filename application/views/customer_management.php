@@ -93,7 +93,7 @@
 
 									<div class="tab-content">
 										<div id="tab-1" class="tab-pane active">
-												<table id="tbl_invoice_list" class="table table-bordered">
+												<table id="tbl_customer_list" class="table table-bordered">
 													<thead>
 														<tr>
 															<td></td>																												
@@ -104,15 +104,7 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php for($i=0;$i<=55;$i++){ ?>
-														<tr>
-															<td><input type="checkbox"></td>
-															<td>Christian Rueda</td>
-															<td>JDEV IT Business Solution</td>
-															<td>1,500,000.00</td>
-															<td></td>
-														</tr>
-														<?php } ?>
+
 													</tbody>
 												</table>	
 										</div>
@@ -304,30 +296,30 @@
 												<div class="x_content"><!--/panel content-->
 														<form id="frm-customer">
 															<div class="row">
-														
 																<div class="col-md-6 col-sm-6 col-xs-6"><!--/column 2-->
+	
 																	<div class="form-group">	
-																		<label>Firstname *</label>	
-																		<input name="firstname" type="text" class="form-control" data-message="Please make sure you enter Firstname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Firstname here." required>
+																		<label>Lastname *</label>	
+																		<input name="lname" type="text" class="form-control" data-message="Please make sure you enter Lastname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Lastname here." required placeholder = "Enter Lastname">
 																	</div>
 																	
 																	<div class="form-group">	
-																		<label>Lastname</label>	
-																		<input name="lastname" type="text" class="form-control">
+																		<label>Firstname *</label>	
+																		<input name="fname" type="text" class="form-control" data-message="Please make sure you enter Firstname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Firstname here." required placeholder = "Enter Firstname">
 																	</div>
 																	
 																	<div class="form-group">	
 																		<label>Middlename</label>	
-																		<input name="middlename" type="text" class="form-control">
+																		<input name="mname" type="text" class="form-control" placeholder = "Enter Middlename">
 																	</div>
 																	
 																	<div class="form-group">	
-																		<label>Address</label>	
-																		<textarea name="address" class="form-control"></textarea>
+																		<label>Address *</label>	
+																		<textarea name="address" class="form-control"data-message="Please make sure you enter Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Address here." required placeholder = "Enter Address"></textarea>
 																	</div>
 																	<div class="form-group">	
-																		<label>Email Address</label>	
-																		<input name="email" type="text" class="form-control">
+																		<label>Email Address *</label>	
+																		<input name="email" type="text" class="form-control" data-message="Please make sure you enter Email Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Email Address here." required placeholder = "Enter Email Address">
 																	</div>
 																	
 																</div><!--/column 1-->
@@ -336,21 +328,21 @@
 																	
 																	<div class="form-group">	
 																		<label>Billing Address</label>	
-																		<textarea name="billing_address" class="form-control"></textarea>
+																		<textarea name="billing_address" class="form-control" placeholder = "Enter Contact Number"placeholder = "Enter Contact Number"></textarea>
 																	</div>
 																	
 																	<div class="form-group">	
-																		<label>Contact No.</label>	
-																		<input name="pri_contact" type="text" class="form-control">
+																		<label>Contact No. *</label>	
+																		<input name="pri_contact" type="text" class="form-control" data-message="Please make sure you enter  Contact Number." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Contact Number here." required placeholder = "Enter Contact Number">
 																	</div>
 																	<div class="form-group">	
 																		<label>Contact No. (Alternative)</label>	
-																		<input name="sec_contact" type="text" class="form-control">
+																		<input name="sec_contact" type="text" class="form-control" placeholder = "Enter Altenative Contact Number">
 																	</div>
 
 																	<div class="form-group">	
 																		<label>Company Name</label>	
-																		<input name="company" type="text" class="form-control">
+																		<input name="company" type="text" class="form-control" placeholder = "Enter Company Name">
 																	</div>
 																	
 																	<br />
@@ -359,11 +351,7 @@
 																			<input type="checkbox" class="flat" checked="checked" name="is_active"> Active
 																		</label>
 																	</div>
-																	
-																	
-														
-																		
-																	
+	
 																</div><!--/column 2-->
 															
 															</div>
@@ -373,7 +361,7 @@
 										</div><!--/modal body-->
 
                                         <div class="modal-footer">   
-                                            <button id="btn_create_invoice" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Invoice </button>
+                                            <button id="btn_create_customer" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Invoice </button>
 											<button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
                                         </div>
                                     </div>

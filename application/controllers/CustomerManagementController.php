@@ -6,13 +6,35 @@ class CustomerManagementController extends CI_Controller {
         // Call the Model constructor
         parent::__construct();
 		$this->load->helper('url');
+        $this->load->model('CustomerManagementModel');
 		
     }
 	
-	function index(){		// the default function that is called if no function is given in the uri		
-		$this->load->view('customer_management');	
+	function index(){		// the default function that is called if no function is given in the uri
+        $this->load->view('customer_management');
 	}
-	
+
+    function ActionGetCustomerList(){
+        echo json_encode(
+            $this->CustomerManagementModel->ReturnCustomerList()
+        );
+    }
+
+    function InsertCustomerInfo()
+    {
+        if($this->CustomerMangementModel->CreateCustomer())
+        {
+
+            echo json_encode(
+                array(
+                    'stat'=>'success',
+                    'msg'=>'Customer successfully created.'
+                    //'row'=>$this->SalesInvoiceModel->ReturnLastAffectedRowDetails()
+                )
+            );
+        }
+
+    }
 	
 	
 }
