@@ -76,7 +76,6 @@ $(document).ready(function(){
                                    }); //create new notification base on server response
 
                                    var row=response.row[0];
-                                   console.log(row);
                                    var data=[row.cust_info,row.customer,row.company,row.balance,""];
                                    customer_list.updateRow(_selectedRow,data);
                                    clearFields(); //clear fields
@@ -276,7 +275,7 @@ $(document).ready(function(){
 
                     customerInfoModal.setMode("edit"); //set mode to editing
                     customerInfoModal.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
-                    customerInfoModal.setSelectedRow(); //remember the row we are going to update
+                    customerInfoModal.setSelectedRow(row); //remember the row we are going to update
 
                     //alert(row.find('td').eq(2).text());
 

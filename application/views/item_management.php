@@ -584,7 +584,7 @@
     <script src="assets/js/plugins/iCheck/icheck.min.js"></script>
 	
 	 <!-- Datepicker -->
-	<script src="assets/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
     <script src="assets/js/plugins/moment.min2.js"></script>
     <script src="assets/js/plugins/datepicker/daterangepicker.js"></script>
 
