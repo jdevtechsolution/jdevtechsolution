@@ -45,7 +45,7 @@ $(document).ready(function(){
 
 
                                var row=response.row[0];
-                               var data=[row.cust_info,row.customer,row.company,0];
+                               var data=[row.cust_info,row.customer,row.company,0,""];
 
                                customer_list.addRow(data); //add the info of recent invoice
                                customer_list.lastPage(); //go to last page
@@ -77,7 +77,7 @@ $(document).ready(function(){
 
                                    var row=response.row[0];
                                    console.log(row);
-                                   var data=[row.cust_info,row.customer,row.company,row.balance];
+                                   var data=[row.cust_info,row.customer,row.company,row.balance,""];
                                    customer_list.updateRow(_selectedRow,data);
                                    clearFields(); //clear fields
                                })
@@ -352,14 +352,14 @@ $(document).ready(function(){
                             }
                         },//column 3 company name
 
-                        {//column 3 company name
+                        {//column 3 balance
 
                             'bSortable': false,
                             'targets': [3],
                             'render': function(data, type, full, meta){
                                 return data;
                             }
-                        },//column 3 company name
+                        },//column 3 balance
 
                         {//column 4 action buttons
 
@@ -373,18 +373,19 @@ $(document).ready(function(){
                             }
                         }//column 4 action buttons
 
-                    ],
-                    "rowCallback":function( row, data, index ){
-
-                        //$(row).find('td').eq(5).attr({
-                        //    "align":"right"
-                        //});
-                        //
-                        //$(row).find('td').eq(3).attr({
-                        //    "data-customer-id": data[3].split('|')[0]
-                        //});
-
-                    }
+                    ]
+                    //,
+                    //"rowCallback":function( row, data, index ){
+                    //
+                    //    //$(row).find('td').eq(5).attr({
+                    //    //    "align":"right"
+                    //    //});
+                    //    //
+                    //    //$(row).find('td').eq(3).attr({
+                    //    //    "data-customer-id": data[3].split('|')[0]
+                    //    //});
+                    //
+                    //}
 
 
                 });
