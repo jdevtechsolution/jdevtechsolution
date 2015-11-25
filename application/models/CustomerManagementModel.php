@@ -88,6 +88,7 @@ class CustomerManagementModel extends CI_Model {
                 'company' => $this->input->post('company',TRUE),
                 'modified_by' => 1
             );
+
             //$this->db->set('date_modified', 'CURRENT_TIMESTAMP()', FALSE); //set date created
             $this->db->where('customer_id',$customer_id);
             $this->db->update('customer_info',$data) or die(json_encode($this->error)); //insert data to database

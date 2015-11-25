@@ -42,7 +42,7 @@ class CustomerManagementController extends CI_Controller {
                 array(
                     'stat'=>'success',
                     'msg'=>'Invoice successfully updated.',
-                    'row'=>$this->SalesInvoiceModel->ReturnLastAffectedRowDetails()
+                    'row'=>$this->CustomerManagementModel->ReturnLastAffectedRowDetails()
                 )
             );
 
