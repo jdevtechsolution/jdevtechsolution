@@ -169,34 +169,7 @@
         </div>
         </div>
 		
-		<div class="modal fade" id="period_modal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog"  style="width:30%;">
-                <div class="modal-content animated bounceInRight">
-					<div class="modal-body"><!--/modal body-->
-						<div class="form-group">
-							<label class="font-noraml">Period Start</label>
-								<div class="input-group date">
-								<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input  id="txt_date_due" name="date_due" type="text" class="form-control" value="03/04/2014">
-							</div>
-						</div>
-				
-						<div class="form-group">
-							<label class="font-noraml">Period End</label>
-								<div class="input-group date">
-								<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input  id="txt_date_due" name="date_due" type="text" class="form-control" value="03/04/2014">
-							</div>
-						</div>
-						
-						
-					</div>
-					
-					<div class="modal-footer">   
-                        <button id="" type="button" class="btn btn-primary"><i class="fa fa-calendar"></i> <u>A</u>pply Period </button>
-						<button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
-                    </div>
-				</div>
-			</div>
-		</div>
+
 		
 		<!---/invoice modal--->
 		<div class="modal fade" id="invoice_modal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">

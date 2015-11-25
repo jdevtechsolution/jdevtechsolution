@@ -112,7 +112,7 @@ $(document).ready(function(){
 					//show list of invoice of current period
 					var showInvoiceHistoryList=function(period){
 						$('#tbl_invoice_list tbody').html('<tr><td colspan="8" align="center"><img src="assets/img/ajax-loader-sm.gif"></td></tr>');
-					
+
 						$.getJSON('SalesInvoiceController/ActionGetInvoiceHistory',period, function(response){
 							tbl_invoice_list.clear().draw(); //make sure invoice datatable has no rows
 							console.log(response);
@@ -384,6 +384,7 @@ $(document).ready(function(){
 					
 		})();
 /**********************************************************************************************************************************************************/
+
 		//all typehead modules
 		var typeHeadModules=(function(){
 				var typeHeadPLU;
@@ -761,7 +762,13 @@ $(document).ready(function(){
                         console.log(start.toISOString(), end.toISOString(), label);
                     });
 
-                    console.log($('#btn_period'));
+
+                    $('#btn_period').click(function(){
+                        invoiceListModule.showInvoiceHistoryList({
+                            "start":    $('#period_modal input[name="start"]').val(),
+                            "end":      $('#period_modal input[name="end"]').val()
+                        });
+                    });
 
 
             })();
