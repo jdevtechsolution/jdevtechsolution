@@ -57,6 +57,7 @@ $(document).ready(function(){
 									'bSortable': false,
 									'targets': [0],
 									'render': function(data, type, full, meta){
+                                       // alert(data);
 										var _arrData=data.split('|');
 										return '<input type="checkbox" value="'+_arrData[0]+'" data-bill-address="'+_arrData[1]+'" data-ship-address="'+_arrData[2]+'" data-remarks="'+_arrData[3]+'">';
 									}
@@ -457,7 +458,7 @@ $(document).ready(function(){
 																text:  response.msg,
 																type:  response.stat
 															}); //create new notification base on server response
-															
+
 															var row=response.row[0];
 															var data=[row.record_info,row.invoice_no,row.txn_date,row.customer,row.seller,row.invoice_amount,row.is_active,""];
 															invoiceListModule.addRow(data); //add the info of recent invoice
@@ -670,7 +671,7 @@ $(document).ready(function(){
 				//get selected row, the tr element
 				var getSelectedRow=-function(){
 					return _selectedRow;
-				}
+				};
 				
 				var clearFields=function(){
 					$('#plu_head').val('');

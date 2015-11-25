@@ -27,13 +27,14 @@ $(document).ready(function(){
 
             var bindEventHandler = function ()
             {
-               $('btn_create_customer').click(function(){
-                   if (cutomermodal_validate_fields())
+               $('#btn_create_customer').click(function(){
+                   if (customermodal_validate_fields())
                    {
                        if (_mode=="new")
                        {
                            CreateCustomer()
                            .success(function(response){
+
                                console.log(response);
                                PNotify.removeAll(); //remove all notifications
                                new PNotify({
@@ -43,19 +44,47 @@ $(document).ready(function(){
                                }); //create new notification base on server response
 
 
-                               clearFields();
+                               var row=response.row[0];
+                               var data=[row.cust_info,row.customer,row.company,0];
+
+                               customer_list.addRow(data); //add the info of recent invoice
+                               customer_list.lastPage(); //go to last page
+                               customerInfoModal.clearFields();
 
                             })
                            .error(function(xhr,stat,error){ //if error occurs
                                alert(xhr.responseText);
                                console.log(xhr);
+
                            });
 
                        } // end new
 
                        else if (_mode=="edit")
                        {
+                           UpdateCustomer()
+                               .success(function(response){ //if request is successful
+                                   //console.log(response);
+                                   //alert(response.test);
+                                   hideModal();
 
+                                   PNotify.removeAll(); //remove all notifications
+                                   new PNotify({
+                                       title: 'Success!',
+                                       text:  response.msg,
+                                       type:  response.stat
+                                   }); //create new notification base on server response
+
+                                   var row=response.row[0];
+                                   console.log(row);
+                                   var data=[row.cust_info,row.customer,row.company,row.balance];
+                                   customer_list.updateRow(_selectedRow,data);
+                                   clearFields(); //clear fields
+                               })
+                               .error(function(xhr,stat,error){ //if error occurs
+                                   alert(xhr.responseText);
+                                   console.log(xhr);
+                               });
 
                        }// end edit
 
@@ -81,12 +110,31 @@ $(document).ready(function(){
 
             }; //end of saveInvoiceInfo
 
+            //update invoice
+            var UpdateCustomer=function(){
+                var serialData=$('#frm-customer').serializeArray();
+
+                serialData.push({
+                    name:"customer_id",value: _selectedID
+                });
+
+                console.log(serialData);
+
+                return $.ajax({
+                    "dataType":"json",
+                    "type":"POST",
+                    "url":"CustomerManagementController/UpdateCustomerInfo",
+                    "data":serialData
+                });
+
+            };
+
             //field validation
-            var cutomermodal_validate_fields = function(){
+            var customermodal_validate_fields = function(){
                 var	stat=1;
 
                 // textbox validation
-                $('text[required]').each(function(){
+                $('input[required]').each(function(){
                     if($(this).val()==""){
 
                         $(this).focus()
@@ -122,20 +170,10 @@ $(document).ready(function(){
                         return false; //this will exit on function inside 'each'
                     }
                 });
+
+                return stat; //this will always be executed and return current state
             };
 
-
-            var lastPage=function(){
-                $('#tbl_invoice_list_paginate ul li:nth-last-child(2) a').click(); //trigger 2nd to the last link, the last page number
-            };
-
-
-            var addRow=function(data){
-                tbl_invoice_list
-                    .row
-                    .add(data)
-                    .draw();
-            };
 
             //set mode of modal, are we going to add new or update??
             // "new" for create/"edit" for update
@@ -166,21 +204,38 @@ $(document).ready(function(){
             //get selected row, the tr element
             var getSelectedRow=-function(){
                 return _selectedRow;
-            }
+            };
 
             var clearFields=function(){
-                $('#frm-customer textarea').val('');
-                $('#frm-customer text').val('');
+                //$('#frm-customer input').val('');
+                //$('#frm-customer textarea').val('');
+                $('#frm-customer').trigger("reset");
                 //$('#frm-customer select').val('').selectpicker('refresh');
             };
 
 
             var showModal=function(){
-                $('#invoice_modal').modal('show');
+                $('#customer_modal').modal('show');
             };
 
             var hideModal=function(){
-                $('#invoice_modal').modal('hide');
+                $('#customer_modal').modal('hide');
+            };
+
+            //set invoice modal details
+            var setCustomerModalDetails=function(data){
+
+                $('#customer_id').val(data.customer_id)
+                $('#lname').val(data.lname);
+                $('#fname').val(data.fname);
+                $('#mname').val(data.mname);
+                $('#company').val(data.company);
+                $('#balance').val(data.balance);
+                $('#address').val(data.address);
+                $('#billing_address').val(data.billing_address);
+                $('#pri_contact').val(data.pri_contact);
+                $('#sec_contact').val(data.sec_contact);
+                $('#email').val(data.email);
             };
 
 
@@ -192,7 +247,7 @@ $(document).ready(function(){
                 clearFields: 	clearFields,
                 showModal: 		showModal,
                 hideModal:		hideModal,
-
+                setDetails:     setCustomerModalDetails,
                 setSelectedID: 	setSelectedID,
                 getSelectedID: 	getSelectedID,
                 setSelectedRow: setSelectedRow
@@ -200,11 +255,62 @@ $(document).ready(function(){
             }; //end of return value
 
         })();
-        //////////////////////////////////////  END CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
+//////////////////////////////////////  END CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
 
-        //////////////////////////////////////  CUSTOMER LIST EVENTS ///////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////  CUSTOMER LIST EVENTS ///////////////////////////////////////////////////////////
         var customer_list = (function () {
             //
+            var tbl_customer_list;
+
+
+            var bindEventHandlers=(function(){
+                /**
+                 *
+                 *	fires when edit invoice button on selected row is clicked
+                 *
+                 */
+                $('#tbl_customer_list > tbody').on('click','button[name="edit_customer"]',function(){
+                    var row=$(this).closest('tr');
+
+                    customerInfoModal.setMode("edit"); //set mode to editing
+                    customerInfoModal.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
+                    customerInfoModal.setSelectedRow(); //remember the row we are going to update
+
+                    //alert(row.find('td').eq(2).text());
+
+                    //object details of modal
+                    customerInfoModal.setDetails({
+                            "customer_id"	        :		row.find('td:eq(0) input[type="checkbox"]').val(),
+                            "customer"	            :		row.find('td').eq(1).text(),
+                            "company"		        :		row.find('td').eq(2).text(),
+                            "balance"	            :		row.find('td').eq(3).text(),
+                            "lname"                 :       row.find('td:eq(0) input[type="checkbox"]').attr('data-lname'),
+                            "fname"                 :       row.find('td:eq(0) input[type="checkbox"]').attr('data-fname'),
+                            "mname"                 :       row.find('td:eq(0) input[type="checkbox"]').attr('data-mname'),
+                            "address"               :       row.find('td:eq(0) input[type="checkbox"]').attr('data-address'),
+                            "billing_address"       :       row.find('td:eq(0) input[type="checkbox"]').attr('data-billing-address'),
+                            "pri_contact"           :       row.find('td:eq(0) input[type="checkbox"]').attr('data-pri-contact'),
+                            "sec_contact"           :       row.find('td:eq(0) input[type="checkbox"]').attr('data-sec-contact'),
+                            "email"                 :       row.find('td:eq(0) input[type="checkbox"]').attr('data-email')
+                    });
+
+                    //show invoice info modal
+                    customerInfoModal.showModal();
+
+                });
+
+                $('#tab-1').on('click','button[name="new-customer"]',function(){
+                    customerInfoModal.clearFields();
+                    customerInfoModal.setMode("new");
+                    customerInfoModal.showModal();
+
+                });
+
+            })();
+
+
             var initializeInvoiceDatatable=(function(){
                 tbl_customer_list=$('#tbl_customer_list').DataTable({
                     "bLengthChange":false,
@@ -219,7 +325,12 @@ $(document).ready(function(){
                             'bSortable': false,
                             'targets': [0],
                             'render': function(data, type, full, meta){
-                                return '<input type="checkbox" value="'+ data +'" >';
+                                //alert(data);
+                                var _arrData = data.split('|');
+
+                                return '<input type="checkbox" value="'+ _arrData[0] +'" data-lname ="' + _arrData[1] + '" data-fname ="' + _arrData[2] + '" ' +
+                                        'data-mname ="' + _arrData[3] + '" data-address = "' + _arrData[4] +'" data-billing-address = "' + _arrData[5] + '" ' +
+                                        'data-pri-contact = "' + _arrData[6] + '" data-sec-contact = "' + _arrData[7] + '" data-email = "' + _arrData[8] + '" >';
                             }
                         },//column 1 customer id
 
@@ -255,8 +366,8 @@ $(document).ready(function(){
                             'bSortable': false,
                             'targets': [4],
                             'render': function(data, type, full, meta){
-                                var btn_edit='<button name="edit_invoice" class="btn btn-white btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Adjust Invoice"><i class="fa fa-file-text-o"></i> </button>';
-                                var btn_trash='<button name="remove_invoice" class="btn btn-white btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                                var btn_edit='<button name="edit_customer" class="btn btn-white btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Adjust Invoice"><i class="fa fa-file-text-o"></i> </button>';
+                                var btn_trash='<button name="remove_customer" class="btn btn-white btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
                                 return '<center>'+btn_edit+btn_trash+'</center>';
                             }
@@ -265,19 +376,22 @@ $(document).ready(function(){
                     ],
                     "rowCallback":function( row, data, index ){
 
-                        $(row).find('td').eq(5).attr({
-                            "align":"right"
-                        });
+                        //$(row).find('td').eq(5).attr({
+                        //    "align":"right"
+                        //});
+                        //
+                        //$(row).find('td').eq(3).attr({
+                        //    "data-customer-id": data[3].split('|')[0]
+                        //});
 
-                        $(row).find('td').eq(3).attr({
-                            "data-customer-id": data[3].split('|')[0]
-                        });
                     }
 
 
                 });
 
             })();
+
+
 
             //show list of invoice of current period
             var showCustomerList=function(){
@@ -290,11 +404,12 @@ $(document).ready(function(){
 
                     $.each(response,function(index,value){
                         tbl_customer_list.row.add([
-                            value.customer_id,
+                            value.cust_info,
                             value.customer,
                             value.company,
                             value.balance
                         ]).draw();
+
                     });
 
                 }).fail(function(xhr){
@@ -345,14 +460,16 @@ $(document).ready(function(){
             };
 
         })();
-		
+
+
+
 		//write toolbar on datatable
-		var _btnRefresh='<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Create New Customer" onclick="fnShowCustomerModal()"><i class="fa fa-users"></i> Create New Customer</button>';
+		var _btnNew='<button name="new-customer" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Create New Customer" ><i class="fa fa-users"></i> Create New Customer</button>';
         var _btnActive='<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as Active"><i class="fa fa-check-circle"></i> </button>';
         var _btnInactive='<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as Inactive"><i class="fa fa-times-circle"></i> </button>';
         var _btnTrash='<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 			
-		$("div.toolbar").html(_btnRefresh+_btnActive+_btnInactive+_btnTrash);
+		$("div.toolbar").html(_btnNew +_btnActive+_btnInactive+_btnTrash);
 
 
     });
