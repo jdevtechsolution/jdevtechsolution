@@ -19,11 +19,13 @@ class SalesInvoiceModel extends CI_Model {
 	function ReturnProductList(){
 		$rows=array();
 		$sql="SELECT 
-				prod_id as id,
-				CONCAT(prod_code,'  ',prod_description) as name,
-				prod_description as description,
-				prod_code,prod_srp as srp,0 as discount
-			FROM product_info";		
+				a.prod_id as id,
+				CONCAT(a.prod_code,'  ',a.prod_description) as name,
+				a.prod_description as description,
+				a.prod_code,a.prod_srp as srp,0 as discount,
+				b.unit_name
+			FROM product_info as a
+			LEFT JOIN unit_info as b ON a.unit_id=b.unit_id";
 		$query = $this->db->query($sql);
 		foreach ($query->result() as $row)
 		{
@@ -33,7 +35,7 @@ class SalesInvoiceModel extends CI_Model {
 		return $rows;
 	}
 
-	function ReturnInvoiceHistoryList(){
+	function ReturnInvoiceHistoryList($start,$end){
 		$rows=array();
 		$sql="SELECT 
 					CONCAT_WS('|',
@@ -59,8 +61,7 @@ class SalesInvoiceModel extends CI_Model {
 				LEFT JOIN 
 					customer_info as b ON a.customer_id=b.customer_id
 				WHERE 
-					a.is_deleted=FALSE";	
-				
+					a.is_deleted=FALSE AND a.txn_date BETWEEN $start AND $end";
 		$query = $this->db->query($sql);
 		foreach ($query->result() as $row)
 		{

@@ -52,9 +52,12 @@ class SalesInvoiceController extends CI_Controller {
 	
 	
 	
-	function ActionGetInvoiceHistory(){		
+	function ActionGetInvoiceHistory(){
+        $start=date('Y-m-d',strtotime($this->input->get('start')));
+        $end=date('Y-m-d',strtotime($this->input->get('end')));
+
 		echo json_encode(
-			$this->SalesInvoiceModel->ReturnInvoiceHistoryList()		
+			$this->SalesInvoiceModel->ReturnInvoiceHistoryList($start,$end)
 		);
 	}
 	

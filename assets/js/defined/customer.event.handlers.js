@@ -76,7 +76,6 @@ $(document).ready(function(){
                                    }); //create new notification base on server response
 
                                    var row=response.row[0];
-                                   console.log(row);
                                    var data=[row.cust_info,row.customer,row.company,row.balance,""];
                                    customer_list.updateRow(_selectedRow,data);
                                    clearFields(); //clear fields
