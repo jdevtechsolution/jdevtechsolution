@@ -24,7 +24,8 @@
     <link href="assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-	 <link href="assets/js/plugins/notify/pnotify.core.css" rel="stylesheet">
+	<link href="assets/js/plugins/notify/pnotify.core.css" rel="stylesheet">
+    <link href="assets/js/plugins/datepicker/daterangepicker.css" rel="stylesheet">
 
 	
    
@@ -234,9 +235,10 @@
 																		<div class="panel panel-primary" style="padding:10px;">
 																			<div class="form-group" id="data_1">
 																				<label class="font-noraml"><u>D</u>ate Due *</label>
-																				<div class="input-group date">
-																					<span class="input-group-addon"><i class="fa fa-calendar"></i></span><input  id="txt_date_due" name="date_due" type="text" class="form-control" value="03/04/2014">
-																				</div>
+                                                                                <div class="input-group m-b">
+                                                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                                                    <input id="txt_due_date" name="start" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                                                                                </div>
 																			</div>
 																		</div>
 																	</div>
@@ -361,10 +363,43 @@
                                     </div>
                                 </div>
         </div><!---/invoice modal--->
-		
-		
 
-	<?php include('assets/includes/global_js.php'); ?>
+        <!---/period modal--->
+        <div id="period_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog"  style="width:27%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Custom Period</h4>
+                </div>
+                <div class="modal-body">
+
+                    <label>Period Start</label>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="start" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                    </div>
+
+                    <label>Period End</label>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="end" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_period" class="btn btn-primary"><i class="fa fa-calendar"></i> Apply Period</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div><!---/period modal--->
+
+
+
+    <?php include('assets/includes/global_js.php'); ?>
 	
 	<!--- Dropdown / Selectpicker --->
 	<script src="assets/js/plugins/dropdown-enhance/dist/js/bootstrap-select.min.js"></script>
@@ -375,7 +410,8 @@
     <script src="assets/js/plugins/iCheck/icheck.min.js"></script>
 	
 	 <!-- Datepicker -->
-	<script src="assets/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="assets/js/plugins/moment.min2.js"></script>
+    <script src="assets/js/plugins/datepicker/daterangepicker.js"></script>
 	
 	<!-- PNotify -->
     <script type="text/javascript" src="assets/js/plugins/notify/pnotify.core.js"></script>

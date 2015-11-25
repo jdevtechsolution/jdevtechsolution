@@ -109,10 +109,10 @@ $(document).ready(function(){
 					
 					
 					//show list of invoice of current period
-					var showInvoiceHistoryList=function(){
+					var showInvoiceHistoryList=function(period){
 						$('#tbl_invoice_list tbody').html('<tr><td colspan="8" align="center"><img src="assets/img/ajax-loader-sm.gif"></td></tr>');
 					
-						$.getJSON('SalesInvoiceController/ActionGetInvoiceHistory', function(response){	
+						$.getJSON('SalesInvoiceController/ActionGetInvoiceHistory',period, function(response){
 							tbl_invoice_list.clear().draw(); //make sure invoice datatable has no rows
 							console.log(response);
 
@@ -398,7 +398,7 @@ $(document).ready(function(){
 										
 										itemCartListModule.addRow([
 											"1",
-											data.id+"|"+data.description,
+											data.id+"|"+data.description+" [ "+data.unit_name+" ]",
 											accounting.formatNumber(data.discount,2),
 											accounting.formatNumber(data.srp),
 											accounting.formatNumber(data.srp,2),
@@ -446,7 +446,7 @@ $(document).ready(function(){
 									if(validateRequiredFields()){ //if true, all required fields are supplied
 									
 											if(_mode=="new"){ //if current mode is new			
-													alert("ddd");
+
 													createNewInvoice()
 													.success(function(response){ //if request is successful
 															console.log(response);
@@ -746,23 +746,57 @@ $(document).ready(function(){
 	
 		})();
 		
-/**********************************************************************************************************************************************************/		
-		
-		var pluginListModules=(function(){
-				return {
-					initDTPicker: function(){
-						$('#dt_due_date').datepicker();
-					}
-				};
-		
-		})();
+/**********************************************************************************************************************************************************/
+
+        var periodInfoModalModule=(function(){
+
+            var bindEventHandlers=(function(){
+
+                    //initialize period modal
+                    $('#period_modal input').daterangepicker({
+                        singleDatePicker: true,
+                        calender_style: "picker_4"
+                    }, function (start, end, label) {
+                        console.log(start.toISOString(), end.toISOString(), label);
+                    });
+
+                    console.log($('#btn_period'));
+
+
+            })();
+
+            var showModal=function(){
+                $('#period_modal').modal('show');
+            };
+
+            var hideModal=function(){
+                $('#period_modal').modal('hide');
+            };
+
+            return {
+                showModal : showModal
+            };
+
+        })();
+
 		
 
 /**********************************************************************************************************************************************************/
-		
+
+        $('#txt_due_date').daterangepicker({
+            singleDatePicker: true,
+            calender_style: "picker_4"
+        }, function (start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+        });
+
+
 		//itemCartListModule.
-		invoiceListModule.showInvoiceHistoryList();
-		pluginListModules.initDTPicker();		
+		invoiceListModule.showInvoiceHistoryList({
+            "start":"11/25/2015",
+            "end":"11/25/2015"
+        });
+
 		
 		
 		
