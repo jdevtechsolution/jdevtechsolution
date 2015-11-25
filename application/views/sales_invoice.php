@@ -24,7 +24,7 @@
     <link href="assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-	 <link href="assets/js/plugins/notify/pnotify.core.css" rel="stylesheet">
+    <link href="assets/js/plugins/notify/pnotify.core.css" rel="stylesheet">
 
 	
    

@@ -22,18 +22,31 @@ class CustomerManagementController extends CI_Controller {
 
     function InsertCustomerInfo()
     {
-        if($this->CustomerMangementModel->CreateCustomer())
+        if($this->CustomerManagementModel->CreateCustomer())
         {
 
             echo json_encode(
                 array(
                     'stat'=>'success',
-                    'msg'=>'Customer successfully created.'
-                    //'row'=>$this->SalesInvoiceModel->ReturnLastAffectedRowDetails()
+                    'msg'=>'Customer successfully created.',
+                    'row'=>$this->CustomerManagementModel->ReturnLastAffectedRowDetails()
                 )
             );
         }
 
+    }
+
+    function UpdateCustomerInfo(){
+        if($this->CustomerManagementModel->UpdateCustomer()){
+            echo json_encode(
+                array(
+                    'stat'=>'success',
+                    'msg'=>'Invoice successfully updated.',
+                    'row'=>$this->SalesInvoiceModel->ReturnLastAffectedRowDetails()
+                )
+            );
+
+        }
     }
 	
 	

@@ -24,6 +24,8 @@
     <link href="assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+
+    <link href="assets/js/plugins/notify/pnotify.core.css" rel="stylesheet">
 	
 
 	
@@ -300,26 +302,26 @@
 	
 																	<div class="form-group">	
 																		<label>Lastname *</label>	
-																		<input name="lname" type="text" class="form-control" data-message="Please make sure you enter Lastname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Lastname here." required placeholder = "Enter Lastname">
+																		<input id="lname" name="lname" type="text" class="form-control" data-message="Please make sure you enter Lastname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Lastname here." required placeholder = "Enter Lastname">
 																	</div>
 																	
 																	<div class="form-group">	
 																		<label>Firstname *</label>	
-																		<input name="fname" type="text" class="form-control" data-message="Please make sure you enter Firstname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Firstname here." required placeholder = "Enter Firstname">
+																		<input id="fname" name="fname" type="text" class="form-control" data-message="Please make sure you enter Firstname." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Firstname here." required placeholder = "Enter Firstname">
 																	</div>
 																	
 																	<div class="form-group">	
 																		<label>Middlename</label>	
-																		<input name="mname" type="text" class="form-control" placeholder = "Enter Middlename">
+																		<input id="mname" name="mname" type="text" class="form-control" placeholder = "Enter Middlename">
 																	</div>
 																	
 																	<div class="form-group">	
 																		<label>Address *</label>	
-																		<textarea name="address" class="form-control"data-message="Please make sure you enter Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Address here." required placeholder = "Enter Address"></textarea>
+																		<textarea id="address" name="address" class="form-control"data-message="Please make sure you enter Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Address here." required placeholder = "Enter Address"></textarea>
 																	</div>
 																	<div class="form-group">	
 																		<label>Email Address *</label>	
-																		<input name="email" type="text" class="form-control" data-message="Please make sure you enter Email Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Email Address here." required placeholder = "Enter Email Address">
+																		<input id="email" name="email" type="text" class="form-control" data-message="Please make sure you enter Email Address." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Email Address here." required placeholder = "Enter Email Address">
 																	</div>
 																	
 																</div><!--/column 1-->
@@ -328,27 +330,27 @@
 																	
 																	<div class="form-group">	
 																		<label>Billing Address</label>	
-																		<textarea name="billing_address" class="form-control" placeholder = "Enter Contact Number"placeholder = "Enter Contact Number"></textarea>
+																		<textarea id="billing_address" name="billing_address" class="form-control" placeholder = "Enter Contact Number"placeholder = "Enter Contact Number"></textarea>
 																	</div>
 																	
 																	<div class="form-group">	
 																		<label>Contact No. *</label>	
-																		<input name="pri_contact" type="text" class="form-control" data-message="Please make sure you enter  Contact Number." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Contact Number here." required placeholder = "Enter Contact Number">
+																		<input id="pri_contact" name="pri_contact" type="text" class="form-control" data-message="Please make sure you enter  Contact Number." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter Contact Number here." required placeholder = "Enter Contact Number">
 																	</div>
 																	<div class="form-group">	
 																		<label>Contact No. (Alternative)</label>	
-																		<input name="sec_contact" type="text" class="form-control" placeholder = "Enter Altenative Contact Number">
+																		<input id="sec_contact" name="sec_contact" type="text" class="form-control" placeholder = "Enter Altenative Contact Number">
 																	</div>
 
 																	<div class="form-group">	
 																		<label>Company Name</label>	
-																		<input name="company" type="text" class="form-control" placeholder = "Enter Company Name">
+																		<input id="company" name="company" type="text" class="form-control" placeholder = "Enter Company Name">
 																	</div>
 																	
 																	<br />
 																	<div class="form-group">
 																		<label>
-																			<input type="checkbox" class="flat" checked="checked" name="is_active"> Active
+																			<input id="is_active" type="checkbox" class="flat" checked="checked" name="is_active"> Active
 																		</label>
 																	</div>
 	
@@ -361,7 +363,7 @@
 										</div><!--/modal body-->
 
                                         <div class="modal-footer">   
-                                            <button id="btn_create_customer" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Invoice </button>
+                                            <button id="btn_create_customer" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>R</u>ecord Customer </button>
 											<button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
                                         </div>
                                     </div>
@@ -395,6 +397,11 @@
     <script src="assets/js/plugins/peity/jquery.peity.min.js"></script>
 	
     <script src="assets/js/defined/customer.event.handlers.js"></script>
+
+    <!-- PNotify -->
+    <script type="text/javascript" src="assets/js/plugins/notify/pnotify.core.js"></script>
+    <script type="text/javascript" src="assets/js/plugins/notify/pnotify.buttons.js"></script>
+    <script type="text/javascript" src="assets/js/plugins/notify/pnotify.nonblock.js"></script>
 	
 </body>
 
