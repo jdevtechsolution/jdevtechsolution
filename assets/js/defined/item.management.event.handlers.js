@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 
     /**
-     * List of Item Modules, initialization of Datatable and its listener
+     * List of Item Modules, initialization of Datatable and its listeners
      */
     var itemListModule=(function(){
         var tbl_item_list;
@@ -83,12 +83,44 @@ $(document).ready(function(){
 
 
     /**
-     * List of Item History, initialization of Datatable and its listener
+     * List of Item History, initialization of Datatable and its listeners
      */
     var itemHistoryListModule=(function(){
         var tbl_item_history;
 
         var bindEventHandlers=(function(){
+
+            //fires everytime the select period has change
+            $('#tab-2').on('change','select[name="period"]',function(){
+                var period;
+                if($(this).val()==1){ //this day
+                    period={
+                        "start" : libDate.thisDay().start(),
+                        "end" : libDate.thisDay().end()
+                    };
+                }
+
+                if($(this).val()==2){
+                    period={
+                        "start" : libDate.thisMonth().start(),
+                        "end" : libDate.thisMonth().end()
+                    };
+                }
+
+                if($(this).val()==3){
+                    period={
+                        "start" : libDate.thisYear().start(),
+                        "end" : libDate.thisYear().end()
+                    };
+                }
+
+                if($(this).val()==4){
+                    periodInfoModalModule.showModal();
+                }
+
+                showHistoryList(period);
+
+            });
 
         })();
 
@@ -106,15 +138,23 @@ $(document).ready(function(){
         })();
 
         var createToolBar=(function(){
-            var _cboPeriod='<select class="form-control" style="width:200px;">'+
-                '<option>This Day</option>'+
-                '<option>This Month</option>'+
-                '<option>This Year</option>'+
-                '<option>Custom Period</option>'+
+            var _cboPeriod='<select id="cbo-period" name="period" class="form-control" style="width:200px;">'+
+                '<option value="1">This Day</option>'+
+                '<option value="2">This Month</option>'+
+                '<option value="3">This Year</option>'+
+                '<option value="4">Custom Period</option>'+
                 '</select>';
+
 
             $('div.period').html(_cboPeriod);
         })();
+
+        var showHistoryList=(function(period){
+
+            alert(period.start);
+            alert(period.end);
+
+        });
 
 
     })();
@@ -137,10 +177,21 @@ $(document).ready(function(){
 
 
     /**
-     * List of Category, initialization of Datatable and its listener
+     * List of Category, initialization of Datatable and its listeners
      */
     var categoryListModule=(function(){
         var tbl_category_list;
+
+        var bindEventHandlers=(function(){
+
+                $('#collapseOne').on('click','button[name="create_new_category"]',function(){
+                    categoryInfoModalModule.showModal();
+                });
+
+
+
+
+        })();
 
 
         var initializeCategoryList=(function(){
@@ -187,10 +238,17 @@ $(document).ready(function(){
     })();
 
 
-
+    /**
+     * List of Unit, initialization of Datatable and its listeners
+     */
     var unitListModule=(function(){
         var tbl_unit_list;
 
+        var bindEventHandlers=(function(){
+                $('#collapseTwo').on('click','button[name="create_new_unit"]',function(){
+                    unitInfoModalModule.showModal();
+                });
+        })();
 
         var initializeUnitList=(function(){
             tbl_unit_list=$('#tbl_unit_list').DataTable({
@@ -228,7 +286,7 @@ $(document).ready(function(){
         })();
 
         var createToolBar=(function(){
-            var _btnCreateNewUnit='<button name="create_new_category" style="margin-right:3px;" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Create New Unit"><i class="fa fa-th-large"></i> Create New Unit</button>';
+            var _btnCreateNewUnit='<button name="create_new_unit" style="margin-right:3px;" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Create New Unit"><i class="fa fa-th-large"></i> Create New Unit</button>';
             $("div.new_unit").html(_btnCreateNewUnit);
         })();
 
@@ -236,11 +294,144 @@ $(document).ready(function(){
     })();
 
 
+    /**
+     * category information fields modal
+     */
+    var categoryInfoModalModule=(function(){
+
+        //fires everytime the category modal is shown
+        var bindEventHandlers=(function(){
+            $('#category_info_modal').on('shown.bs.modal', function() {
+                $('.form-control',this).first().focus();
+            });
+        })();
+
+
+        var showModal=function(){
+            $('#category_info_modal').modal('show');
+        };
+
+        return {
+            showModal : showModal
+        };
+
+    })();
+
+
+    /**
+     * unit information fields modal
+     */
+    var unitInfoModalModule=(function(){
+
+        //fires everytime the unit modal is shown
+        var bindEventHandlers=(function(){
+            $('#unit_info_modal').on('shown.bs.modal', function() {
+                $('.form-control',this).first().focus();
+            });
+        })();
+
+
+        var showModal=function(){
+            $('#unit_info_modal').modal('show');
+        };
+
+        return {
+            showModal : showModal
+        };
+
+    })();
+
+
+    /**
+     * period start to end info modal
+     */
+    var periodInfoModalModule=(function(){
+
+        var bindEventHandlers=(function(){
+            $('#period_modal input').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker_4"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+        })();
+
+        var showModal=function(){
+            $('#period_modal').modal('show');
+        };
+
+        return {
+            showModal : showModal
+        };
+
+    })();
+
+
+
+    /**
+     * date functions
+     */
+    var libDate=(function(){
+        var fullDate=new Date();
+
+        return {
+            getDate: function(){
+                return fullDate.getDate();
+            },
+            getMonth : function(){
+                var _month ="0"+(fullDate.getMonth()+1).toString(); //always concatinate "0" to the first character
+                return  _month.slice(-2);
+            },
+            getYear : function(){
+                return fullDate.getFullYear();
+            },
+
+            thisDay : function(){
+                return {
+                    start : function (){
+                        return libDate.getMonth()+"/"+libDate.getDate()+"/"+libDate.getYear();
+                    },
+                    end : function(){
+                        return libDate.getMonth()+"/"+libDate.getDate()+"/"+libDate.getYear();
+                    }
+                };
+            },
+
+            thisMonth : function(){
+                return {
+                    start : function (){
+                        return libDate.getMonth()+"/01/"+libDate.getYear();
+                    },
+                    end : function(){
+                        var _lastFullDate = new Date(libDate.getYear(), fullDate.getMonth() + 1, 0);
+                        var _month ="0"+ (_lastFullDate.getMonth()+1).toString();
+                        var _date=_lastFullDate.getDate();
+                        return   _month.slice(-2)+"/"+_date+"/"+_lastFullDate.getFullYear();
+                    }
+                };
+            },
+
+            thisYear :  function(){
+                return {
+                    start : function (){
+                        return "01/01/"+libDate.getYear();
+                    },
+                    end : function(){
+                        return "12/31/"+libDate.getYear();
+                    }
+                };
+            }
+
+        };
+
+    })();
 
 
     $("span.pie").peity("pie", {
         fill: ['#1ab394', '#d7d7d7', '#ffffff']
     })
+
+
 
 
 });

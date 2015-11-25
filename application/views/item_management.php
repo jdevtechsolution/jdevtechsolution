@@ -24,11 +24,12 @@
     <link href="assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
     <link href="assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-	
+    <link href="assets/js/plugins/datepicker/daterangepicker.css" rel="stylesheet">
 
-	
-   
-	<style>
+
+
+
+    <style>
 		.toolbar , .new_category , .new_unit{
 			float: left;
 		}
@@ -330,8 +331,8 @@
         </div>
 		
 		
-		<!---/invoice modal--->
-		<div class="modal fade" id="item_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
+	<!---/invoice modal--->
+	<div class="modal fade" id="item_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog"  style="width:50%;">
                 <div class="modal-content animated bounceInRight">
 
@@ -428,8 +429,150 @@
                 </div>
             </div>
         </div><!---/invoice modal--->
-		
-		
+
+
+    <!-- / category modal-->
+    <div class="modal fade" id="category_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog"  style="width:30%;">
+            <div class="modal-content animated bounceInRight">
+
+                <div class="modal-body">
+                    <div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
+                        <div class="col-lg-12">
+                            <div class="panel panel-default" style="margin-bottom:-20px;border-radius:0px;">
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Category Management<small class="m-l-sm">Please enter Category Information.</small></h5>
+                                        <div class="ibox-tools">
+
+                                            <a data-dismiss="modal">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Category *</label>
+                                                    <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Item number is required.">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea class="form-control" style="resize: none;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<!--/row-->
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button id="btn_save_changes" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>S</u>ave Changes </button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
+                </div>
+
+            </div>
+        </div>
+    </div><!-- / category modal-->
+
+
+    <!-- / unit modal-->
+    <div class="modal fade" id="unit_info_modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog"  style="width:30%;">
+            <div class="modal-content animated bounceInRight">
+
+                <div class="modal-body">
+                    <div class="row" style="margin-left:-25px;margin-right:-25px;"><!--/row-->
+                        <div class="col-lg-12">
+                            <div class="panel panel-default" style="margin-bottom:-20px;border-radius:0px;">
+
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Unit Management<small class="m-l-sm">Please enter Unit Information.</small></h5>
+                                        <div class="ibox-tools">
+
+                                            <a data-dismiss="modal">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Unit *</label>
+                                                    <input class="form-control" type="text" name="user_code" data-container="body" data-trigger="manual" data-toggle="tooltip" title="Item number is required.">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea class="form-control" style="resize: none;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>	<!--/row-->
+
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button id="btn_save_changes" type="button" class="btn btn-primary"><i class="fa fa-save"></i> <u>S</u>ave Changes </button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
+                </div>
+
+            </div>
+        </div>
+    </div><!-- / unit modal-->
+
+
+    <div id="period_modal" class="modal fade" role="dialog">
+        <div class="modal-dialog"  style="width:27%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Custom Period</h4>
+                </div>
+                <div class="modal-body">
+
+                    <label>Period Start</label>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="start" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                    </div>
+
+                    <label>Period End</label>
+                    <div class="input-group m-b">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input name="end" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"><i class="fa fa-calendar"></i> Apply Period</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
 	<?php include('assets/includes/global_js.php'); ?>
 	
@@ -442,8 +585,11 @@
 	
 	 <!-- Datepicker -->
 	<script src="assets/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-	
-	<!-- Data Tables -->
+    <script src="assets/js/plugins/moment.min2.js"></script>
+    <script src="assets/js/plugins/datepicker/daterangepicker.js"></script>
+
+
+    <!-- Data Tables -->
     <script src="assets/js/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="assets/js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="assets/js/plugins/dataTables/dataTables.responsive.js"></script>
