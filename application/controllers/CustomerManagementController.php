@@ -54,7 +54,7 @@ class CustomerManagementController extends CI_Controller {
             echo json_encode(
                 array(
                     'stat'=>'success',
-                    'msg'=>'Customer successfully updated.',
+                    'msg'=>'Customer successfully deleted.',
                     'id'=> $this->input->post('customer_id',TRUE)
                 )
             );

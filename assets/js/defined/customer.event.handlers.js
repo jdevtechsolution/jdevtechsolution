@@ -35,7 +35,7 @@ $(document).ready(function(){
                                 text:  response.msg,
                                 type:  response.stat
                             }); //create new notification base on server response
-                            console.log(response.id);
+                            //console.log(response.id);
                             customer_list.removeRow(_selectedRow);
                         })
                         .error(function(xhr,stat,error){ //if error occurs
@@ -81,8 +81,8 @@ $(document).ready(function(){
                 return $.ajax({
                     "dataType":"json",
                     "type":"POST",
-                    "url":"CustomerManagementController/DeleteCustomerInfo?customer_id=14"
-                    //"data":{name:"customer_id",value: _selectedID}
+                    "url":"CustomerManagementController/DeleteCustomerInfo",
+                    "data":{customer_id:_selectedID}
                 });
 
             };
