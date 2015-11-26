@@ -95,22 +95,22 @@ $(document).ready(function(){
                 var period;
                 if($(this).val()==1){ //this day
                     period={
-                        "start" : libDate.thisDay().start(),
-                        "end" : libDate.thisDay().end()
+                        "start" : period.thisDay().start(),
+                        "end" : period.thisDay().end()
                     };
                 }
 
-                if($(this).val()==2){
-                    period={
-                        "start" : libDate.thisMonth().start(),
-                        "end" : libDate.thisMonth().end()
+                if($(this).val()==2){ //this month
+                    date_period={
+                        "start" : period.thisMonth().start(),
+                        "end" : period.thisMonth().end()
                     };
                 }
 
-                if($(this).val()==3){
-                    period={
-                        "start" : libDate.thisYear().start(),
-                        "end" : libDate.thisYear().end()
+                if($(this).val()==3){ //this year
+                    date_period={
+                        "start" : period.thisYear().start(),
+                        "end" : period.thisYear().end()
                     };
                 }
 
@@ -118,7 +118,7 @@ $(document).ready(function(){
                     periodInfoModalModule.showModal();
                 }
 
-                showHistoryList(period);
+                showHistoryList(date_period);
 
             });
 
@@ -149,10 +149,10 @@ $(document).ready(function(){
             $('div.period').html(_cboPeriod);
         })();
 
-        var showHistoryList=(function(period){
+        var showHistoryList=(function(date_period){
 
-            alert(period.start);
-            alert(period.end);
+            alert(date_period.start);
+            alert(date_period.end);
 
         });
 
@@ -368,63 +368,7 @@ $(document).ready(function(){
 
 
 
-    /**
-     * date functions
-     */
-    var libDate=(function(){
-        var fullDate=new Date();
 
-        return {
-            getDate: function(){
-                return fullDate.getDate();
-            },
-            getMonth : function(){
-                var _month ="0"+(fullDate.getMonth()+1).toString(); //always concatinate "0" to the first character
-                return  _month.slice(-2);
-            },
-            getYear : function(){
-                return fullDate.getFullYear();
-            },
-
-            thisDay : function(){
-                return {
-                    start : function (){
-                        return libDate.getMonth()+"/"+libDate.getDate()+"/"+libDate.getYear();
-                    },
-                    end : function(){
-                        return libDate.getMonth()+"/"+libDate.getDate()+"/"+libDate.getYear();
-                    }
-                };
-            },
-
-            thisMonth : function(){
-                return {
-                    start : function (){
-                        return libDate.getMonth()+"/01/"+libDate.getYear();
-                    },
-                    end : function(){
-                        var _lastFullDate = new Date(libDate.getYear(), fullDate.getMonth() + 1, 0);
-                        var _month ="0"+ (_lastFullDate.getMonth()+1).toString();
-                        var _date=_lastFullDate.getDate();
-                        return   _month.slice(-2)+"/"+_date+"/"+_lastFullDate.getFullYear();
-                    }
-                };
-            },
-
-            thisYear :  function(){
-                return {
-                    start : function (){
-                        return "01/01/"+libDate.getYear();
-                    },
-                    end : function(){
-                        return "12/31/"+libDate.getYear();
-                    }
-                };
-            }
-
-        };
-
-    })();
 
 
     $("span.pie").peity("pie", {

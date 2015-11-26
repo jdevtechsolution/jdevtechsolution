@@ -11,10 +11,22 @@ $(document).ready(function(){
 					
 					
 					var bindEventHandlers=(function(){
+                                $('#tbl_invoice_list > tbody').on('click','tr',function(){
+                                    $(this).siblings()
+                                        .removeClass('active')
+                                        .find('td:eq(0) input[type="checkbox"]')
+                                        .prop('checked',false); //remove highlights of other rows
+
+                                    $(this).attr('class','active')
+                                        .find('td:eq(0) input[type="checkbox"]')
+                                        .prop('checked',true); //highlight the row that fires the event
+
+                                    $('a[href="#tab-2"]').find('strong').html( " "+$(this).find('td').eq(1).text()+" " );
+
+                                });
+
 								/**
-								*
 								*	fires when edit invoice button on selected row is clicked
-								*								
 								*/					
 								$('#tbl_invoice_list tbody').on('click','button[name="edit_invoice"]',function(){
 									var row=$(this).closest('tr');
@@ -85,8 +97,8 @@ $(document).ready(function(){
 									'bSortable': false,
 									'targets': [7],
 									'render': function(data, type, full, meta){
-										var btn_edit='<button name="edit_invoice" class="btn btn-white btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Adjust Invoice"><i class="fa fa-file-text-o"></i> </button>';
-										var btn_trash='<button name="remove_invoice" class="btn btn-white btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+										var btn_edit='<button name="edit_invoice" class="btn btn-default btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Adjust Invoice"><i class="fa fa-file-text-o"></i> </button>';
+										var btn_trash='<button name="remove_invoice" class="btn btn-default btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 										
 										return '<center>'+btn_edit+btn_trash+'</center>';
 									}
@@ -115,11 +127,8 @@ $(document).ready(function(){
 
 						$.getJSON('SalesInvoiceController/ActionGetInvoiceHistory',period, function(response){
 							tbl_invoice_list.clear().draw(); //make sure invoice datatable has no rows
-							console.log(response);
 
-							
-							$.each(response,function(index,value){								
-								
+							$.each(response,function(index,value){
 								tbl_invoice_list.row.add([
 									value.record_info,
 									value.invoice_no,
@@ -133,8 +142,7 @@ $(document).ready(function(){
 							});
 							
 						}).fail(function(xhr){
-
-
+                            alert(xhr.responseText);
                         });
 					};
 					
@@ -194,12 +202,12 @@ $(document).ready(function(){
 					var bindEventHandlers=(function(){
 					
 							//update data cached everytime changes is done on datatable td DOM, to make it safe it updates everytime td lost focus
-							$('#tbl_item_cart > tbody').on('blur','td',function(){			
-							
-								updateCachedData(this);	//update cached data even if "Enter" key is not pressed		
-								
-								var row=$(this).closest('tr');
+							$('#tbl_item_cart > tbody').on('blur','td',function(){
+                                var row=$(this).closest('tr');
+
+								updateCachedData(this);	//update cached data even if "Enter" key is not pressed
 								setLineTotal( row , getLineTotal( row ) ); //update line total amount
+
 								
 								updateCachedData(row.find('td').eq(4)); //update cached data of total
 								
@@ -222,12 +230,12 @@ $(document).ready(function(){
 							
 							$('#tbl_item_cart > tbody').on('keypress','td',function(event){	
 								if(event.keyCode==13){
-										
-									updateCachedData(this); //update cached data
-									
-									var row=$(this).closest('tr');	
-									setLineTotal(  row , getLineTotal(row)  ); //compute line total	
-									
+                                    var row=$(this).closest('tr');
+
+                                    updateCachedData(this); //update cached data
+									setLineTotal(  row , getLineTotal(row)  ); //compute line total
+
+                                    setFooterDetails();
 									formatEditableNumberCells( row ); //set number format
 									
 									$('#plu_typehead').focus();
@@ -314,7 +322,31 @@ $(document).ready(function(){
 					//set total amount
 					var setLineTotal=function(row,amount){
 						row.find('td').eq(4).text(accounting.formatNumber(amount,2));
+                        updateCachedData(row.find('td').eq(4)); //update also the line total in cached data
 					};
+
+                    //set all cart footer info, total invoice, total discount, percent discount
+                    var setFooterDetails=function(){
+                        var _totalDiscount=0, _totalInvoice= 0, _totalUndiscounted=0;
+
+                        tbl_item_cart.rows().eq(0).each(function(index){
+                            var row = tbl_item_cart.row(index);
+                            var data = row.data();
+                            _totalDiscount+=parseFloat(accounting.unformat(data[2]));
+                            _totalInvoice+=parseFloat(accounting.unformat(data[4]));
+                            _totalUndiscounted+=parseFloat(accounting.unformat(data[3]))*parseFloat(accounting.unformat(data[0]))
+                        });
+
+                        //alert(_totalDiscount);
+                        $('#cell_total_discount').html('<strong>'+accounting.formatNumber(_totalDiscount,2)+'</strong>');
+                        $('#cell_total_invoice').html('<strong>'+accounting.formatNumber(_totalInvoice,2)+'</strong>');
+
+                        //compute total percentage
+
+                        var _percentDisc=(_totalDiscount/_totalUndiscounted)*100;
+                        $('#cell_discount_percent').html('<strong>'+_percentDisc+'%</strong>');
+
+                    };
 					
 					//set total discount on cart table footer
 					var setTotalDiscount=function(amount){
@@ -358,8 +390,7 @@ $(document).ready(function(){
 					var removeRows=function(){						
 						tbl_item_cart.clear().draw();
 					};
-					
-					
+
 					
 					//return objectss
 					return {
@@ -693,6 +724,7 @@ $(document).ready(function(){
 				var setInvoiceModalDetails=function(data){									
 				
 					$('#cbo_customer').val(data.customer_id).selectpicker('refresh');
+                    $('#txn_date').val(data.txn_date);
 					$('#txt_bill_address').val(data.bill_address);
 					$('#txt_ship_address').val(data.ship_address);
 					$('#txt_remarks').val(data.remarks);
@@ -768,6 +800,8 @@ $(document).ready(function(){
                             "start":    $('#period_modal input[name="start"]').val(),
                             "end":      $('#period_modal input[name="end"]').val()
                         });
+
+                        hideModal();
                     });
 
 
@@ -787,7 +821,7 @@ $(document).ready(function(){
 
         })();
 
-		
+
 
 /**********************************************************************************************************************************************************/
 
@@ -799,10 +833,11 @@ $(document).ready(function(){
         });
 
 
-		//itemCartListModule.
+
+
 		invoiceListModule.showInvoiceHistoryList({
-            "start":"11/25/2015",
-            "end":"11/25/2015"
+            "start" :   period.thisDay().start(),
+            "end"   :   period.thisDay().end()
         });
 
 		

@@ -47,7 +47,7 @@
 			background: white;
 		}
 
-        #tbl_item_list > tbody > tr:hover { cursor: pointer; cursor: hand; }
+        table > tbody > tr:hover { cursor: pointer; cursor: hand; }
 	</style>
 </head>
 
@@ -600,6 +600,9 @@
 	
 	<!-- Peity -->
     <script src="assets/js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- my date libray -->
+    <script src="assets/js/defined/date.library.js"></script>
 
     <script src="assets/js/defined/item.management.event.handlers.js"></script>
 

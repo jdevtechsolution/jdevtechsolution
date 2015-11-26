@@ -57,7 +57,8 @@ class SalesInvoiceController extends CI_Controller {
         $end=date('Y-m-d',strtotime($this->input->get('end')));
 
 		echo json_encode(
-			$this->SalesInvoiceModel->ReturnInvoiceHistoryList($start,$end)
+			//
+            $this->SalesInvoiceModel->ReturnInvoiceHistoryList($start,$end)
 		);
 	}
 	
@@ -65,7 +66,7 @@ class SalesInvoiceController extends CI_Controller {
 		$id=$this->input->get('id',TRUE);
 		
 		echo json_encode(
-			$this->SalesInvoiceModel->ReturnInvoiceCartItems($id)
+           $this->SalesInvoiceModel->ReturnInvoiceCartItems($id)
 		);
 		
 	}

@@ -16,7 +16,8 @@ class CustomerManagementModel extends CI_Model {
 	
 	function ReturnCustomerList(){
 		$rows=array();
-		$sql="SELECT 
+		$sql="SELECT
+                customer_id,
 				CONCAT_WS('|',customer_id,lname,fname,mname,address,billing_address,pri_contact,sec_contact,email) as cust_info,
 				CONCAT_WS(' ',fname,mname,lname) as customer,
 				company,

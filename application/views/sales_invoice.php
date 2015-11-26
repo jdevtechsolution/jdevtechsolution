@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>PAUL CHRISTIAN RUEDA</title>
+    <title>JCore v2</title>
 
 	
     <?php include('assets/includes/global_css.html'); ?>
@@ -48,8 +48,8 @@
 			
 			background: white;
 		}
-		
-		
+
+        #tbl_invoice_list > tbody > tr:hover { cursor: pointer; cursor: hand; }
 	</style>
 </head>
 
@@ -122,7 +122,7 @@
 									
 										<ul class="nav nav-tabs">
 											<li class="active"><a data-toggle="tab" href="#tab-1">Invoice History</a></li>
-											<li class=""><a data-toggle="tab" href="#tab-2">Invoice # [ 201510290001 ]</a></li>
+											<li class=""><a data-toggle="tab" href="#tab-2">Invoice #  [ <strong class="text-navy"> Nothing selected </strong> ] </a></li>
 										</ul>
 									</div>
 								</div>
@@ -212,7 +212,7 @@
 																				<label class="font-noraml"><u>D</u>ate Due *</label>
                                                                                 <div class="input-group m-b">
                                                                                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                                                    <input id="txt_due_date" name="start" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
+                                                                                    <input id="txn_date" name="date_due" type="text" class="form-control has-feedback-left" aria-describedby="inputSuccess2Status3" value="11/26/2015"  data-message="Please enter a valid transaction date." data-container="body" data-trigger="manual" data-toggle="tooltip" title="Enter transaction date here." required>
                                                                                 </div>
 																			</div>
 																		</div>
@@ -253,14 +253,14 @@
 																				<tfoot>
 																					<tr>
 																						<td colspan="2" align="right" id="td_total_discount"><strong>Total Discount</strong></td>
-																						<td align="right" style="color:red;"><strong>0.00</strong></td>																		
+																						<td id="cell_total_discount" align="right" style="color:red;"><strong>0.00</strong></td>
 																						<td align="right"><strong>Total Invoice</strong></td>																						
-																						<td align="right" style="color:red;"><strong>0.00</strong></td>
+																						<td id="cell_total_invoice" align="right" style="color:red;"><strong>0.00</strong></td>
 																						<td>Php</td>
 																					</tr>
 																					<tr>
 																						<td colspan="2" align="right"><strong>Discount %</strong></td>
-																						<td align="right" style="color:red;"><strong>0%</strong></td>																		
+																						<td id="cell_discount_percent" align="right" style="color:red;"><strong>0%</strong></td>
 																						<td align="right"><strong>Net Amount</strong></td>																						
 																						<td align="right" style="color:red;"><strong>0.00</strong></td>
 																						<td>Php</td>
@@ -399,6 +399,10 @@
     <script src="assets/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="assets/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 	<script src="assets/js/plugins/formatter/accounting.js"></script>
+
+    <!-- my date libray -->
+    <script src="assets/js/defined/date.library.js"></script>
+
     <script src="assets/js/defined/sales.invoice.event.handlers.js"></script>
 	
 </body>

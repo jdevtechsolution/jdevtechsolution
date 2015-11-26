@@ -47,7 +47,7 @@ class SalesInvoiceModel extends CI_Model {
 					
 					a.invoice_no,
 					
-					DATE_FORMAT(a.txn_date,'%d/%m/%Y')as txn_date,
+					DATE_FORMAT(a.txn_date,'%m/%d/%Y')as txn_date,
 					
 					CONCAT_WS('|',
 							a.customer_id,
@@ -61,7 +61,7 @@ class SalesInvoiceModel extends CI_Model {
 				LEFT JOIN 
 					customer_info as b ON a.customer_id=b.customer_id
 				WHERE 
-					a.is_deleted=FALSE AND a.txn_date BETWEEN $start AND $end";
+					a.txn_date BETWEEN '$start' AND '$end'";
 		$query = $this->db->query($sql);
 		foreach ($query->result() as $row)
 		{
