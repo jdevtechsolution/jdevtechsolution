@@ -18,7 +18,86 @@ $(document).ready(function(){
 				negBarColor: '#c6c6c6'
 		});
 
+        var customer_cofirm_modal=(function(){ //start confirm modal
+            var _selectedRow; var _selectedID;
+            var bindEventHandler = function() //start event handler
+            {
+                $('#btn_delete_customer').click(function(){
+                    deleteCustomer()
+                        .success(function(response){ //if request is successful
+                            //console.log(response);
+                            //alert(response.test);
+                            hideModal();
 
+                            PNotify.removeAll(); //remove all notifications
+                            new PNotify({
+                                title: 'Success!',
+                                text:  response.msg,
+                                type:  response.stat
+                            }); //create new notification base on server response
+                            console.log(response.id);
+                            customer_list.removeRow(_selectedRow);
+                        })
+                        .error(function(xhr,stat,error){ //if error occurs
+                            alert(xhr.responseText);
+                            console.log(xhr);
+                        });
+                });
+
+            }(); //end event handler
+
+            var showModal=function(){
+                $('#confirm_modal').modal('show');
+            };
+
+            var hideModal=function(){
+                $('#confirm_modal').modal('hide');
+            };
+
+            var setMessage = function(customer_name){
+                $('#confirm_modal .modal-body').html('<p> Are you sure you want to deleted ? [' + customer_name  + ']</p>');
+            };
+
+            var setSelectedRow=function(row){
+                _selectedRow=row;
+            };
+
+            //get selected row, the tr element
+            var getSelectedRow=-function(){
+                return _selectedRow;
+            };
+
+            //set selected id
+            var setSelectedID=function(id){
+                _selectedID=id;
+            };
+
+            var getSelectedID=function(){
+                return _selectedID;
+            };
+
+            var deleteCustomer=function(){
+                //alert(_selectedID);
+                return $.ajax({
+                    "dataType":"json",
+                    "type":"POST",
+                    "url":"CustomerManagementController/DeleteCustomerInfo?customer_id=14"
+                    //"data":{name:"customer_id",value: _selectedID}
+                });
+
+            };
+
+            return {
+                showModal: 		showModal,
+                hideModal:		hideModal,
+                setMessage:		setMessage,
+                setSelectedRow: setSelectedRow,
+                getSelectedRow: getSelectedRow,
+                setSelectedID: setSelectedID,
+                getSelectedID: getSelectedID
+
+            }; //end of return value
+        })();//end confirm modal
 
     //////////////////////////////////////  CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
         var customerInfoModal =(function(){
@@ -32,7 +111,7 @@ $(document).ready(function(){
                    {
                        if (_mode=="new")
                        {
-                           CreateCustomer()
+                           createCustomer()
                            .success(function(response){
 
                                console.log(response);
@@ -62,7 +141,7 @@ $(document).ready(function(){
 
                        else if (_mode=="edit")
                        {
-                           UpdateCustomer()
+                           updateCustomer()
                                .success(function(response){ //if request is successful
                                    //console.log(response);
                                    //alert(response.test);
@@ -95,7 +174,7 @@ $(document).ready(function(){
 
 
             //add new invoice
-            var CreateCustomer=function(){
+            var createCustomer=function(){
 
                 var serialData=$('#frm-customer').serializeArray();
 
@@ -109,8 +188,8 @@ $(document).ready(function(){
 
             }; //end of saveInvoiceInfo
 
-            //update invoice
-            var UpdateCustomer=function(){
+
+            var updateCustomer=function(){
                 var serialData=$('#frm-customer').serializeArray();
 
                 serialData.push({
@@ -122,7 +201,7 @@ $(document).ready(function(){
                 return $.ajax({
                     "dataType":"json",
                     "type":"POST",
-                    "url":"CustomerManagementController/UpdateCustomerInfo",
+                    "url":"CustomerManagementController/DeleteCustomerInfo",
                     "data":serialData
                 });
 
@@ -221,6 +300,7 @@ $(document).ready(function(){
                 $('#customer_modal').modal('hide');
             };
 
+
             //set invoice modal details
             var setCustomerModalDetails=function(data){
 
@@ -249,7 +329,8 @@ $(document).ready(function(){
                 setDetails:     setCustomerModalDetails,
                 setSelectedID: 	setSelectedID,
                 getSelectedID: 	getSelectedID,
-                setSelectedRow: setSelectedRow
+                setSelectedRow: setSelectedRow,
+                getSelectedRow: getSelectedRow
 
             }; //end of return value
 
@@ -297,6 +378,18 @@ $(document).ready(function(){
 
                     //show invoice info modal
                     customerInfoModal.showModal();
+
+                });
+
+                $('#tbl_customer_list > tbody').on('click','button[name="remove_customer"]',function(){
+                    var row=$(this).closest('tr');
+                    console.log(row);
+                    console.log(row.find('td:eq(0) input[type="checkbox"]').val());
+                    customer_cofirm_modal.setMessage(row.find('td').eq(1).text());
+                    customer_cofirm_modal.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
+                    customer_cofirm_modal.setSelectedRow(row);
+                    //alert(customer_cofirm_modal.getSelectedID);
+                    customer_cofirm_modal.showModal();
 
                 });
 
@@ -421,15 +514,6 @@ $(document).ready(function(){
                 $('#tbl_customer_list_paginate ul li:nth-last-child(2) a').click(); //trigger 2nd to the last link, the last page number
             };
 
-
-            var addRow=function(data){
-                tbl_customer_list
-                    .row
-                    .add(data)
-                    .draw();
-            };
-
-
             //create toolbar buttons
             var createToolBarButton=function(_buttons){
                 $("div.toolbar").html(_buttons);
@@ -441,6 +525,13 @@ $(document).ready(function(){
                 return tbl_customer_list;
             };
 
+            //add row
+            var addRow=function(data){
+                tbl_customer_list
+                    .row
+                    .add(data)
+                    .draw();
+            };
 
             //update row
             var updateRow=function(row,data){
@@ -450,13 +541,21 @@ $(document).ready(function(){
                     .draw();
             };
 
+            //remove row
+            var removeRow=function(row){
+                tbl_customer_list
+                    .row(row).remove()
+                    .draw();
+            };
+
             return {
                 getTableInstance : 		getTableInstance,
                 createToolBarButton: 	createToolBarButton,
                 showInvoiceHistoryList: showCustomerList,
                 addRow: 				addRow,
                 updateRow:				updateRow,
-                lastPage: 				lastPage
+                lastPage: 				lastPage,
+                removeRow:              removeRow
             };
 
         })();

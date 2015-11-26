@@ -22,7 +22,8 @@ class CustomerManagementModel extends CI_Model {
 				CONCAT_WS(' ',fname,mname,lname) as customer,
 				company,
 				balance
-			FROM customer_info";		
+			FROM customer_info
+			WHERE is_deleted = 0";
 
         $query = $this->db->query($sql);
 
@@ -88,6 +89,33 @@ class CustomerManagementModel extends CI_Model {
                 'sec_contact' => $this->input->post('sec_contact',TRUE),
                 'company' => $this->input->post('company',TRUE),
                 'modified_by' => 1
+            );
+
+            //$this->db->set('date_modified', 'CURRENT_TIMESTAMP()', FALSE); //set date created
+            $this->db->where('customer_id',$customer_id);
+            $this->db->update('customer_info',$data) or die(json_encode($this->error)); //insert data to database
+
+            $this->affected_id=$customer_id;
+
+            $this->db->trans_complete(); //end transaction
+            return true;
+        }
+        catch(Exception $e)
+        {
+            die(json_encode($this->error));
+        }
+
+    }
+
+    function DeleteCustomer()
+    {
+        try
+        {
+            $this->db->trans_start(); //start database transaction
+            $customer_id = $this->input->post('customer_id',TRUE);
+            //array data
+            $data = array(
+                'is_deleted' => 1
             );
 
             //$this->db->set('date_modified', 'CURRENT_TIMESTAMP()', FALSE); //set date created
