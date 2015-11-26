@@ -272,7 +272,25 @@
 		
         </div>
         </div>
-		
+
+        <!--- confirmation modal --->
+        <div class="modal fade" id = "confirm_modal" role="dialog" aria-hidden="true">
+            <div class="modal-dialog"  style="width:40%;">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <p>Delete Customer ?</p>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn_delete_customer" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> <u>D</u>elete Customer </button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal"><u>C</u>lose</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--- end confirmation modal --->
 		
 		<!---/invoice modal--->
 		<div class="modal fade" id="customer_modal" tabindex="-1" role="dialog" aria-hidden="true">
