@@ -77,12 +77,12 @@ $(document).ready(function(){
             };
 
             var deleteCustomer=function(){
-                //alert(_selectedID);
+
                 return $.ajax({
                     "dataType":"json",
                     "type":"POST",
-                    "url":"CustomerManagementController/DeleteCustomerInfo?customer_id=14"
-                    //"data":{name:"customer_id",value: _selectedID}
+                    "url":"CustomerManagementController/DeleteCustomerInfo",
+                    "data":{id:_selectedID}
                 });
 
             };
