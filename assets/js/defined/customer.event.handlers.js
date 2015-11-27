@@ -18,6 +18,8 @@ $(document).ready(function(){
 				negBarColor: '#c6c6c6'
 		});
 
+//////////////////////////////////////////////////// start confirm modal for delete /////////////////////////////////////////////////////////
+
         var customer_cofirm_modal=(function(){ //start confirm modal
             var _selectedRow; var _selectedID;
             var bindEventHandler = function() //start event handler
@@ -46,18 +48,22 @@ $(document).ready(function(){
 
             }(); //end event handler
 
+            //show modal
             var showModal=function(){
                 $('#confirm_modal').modal('show');
             };
 
+            //hide modal
             var hideModal=function(){
                 $('#confirm_modal').modal('hide');
             };
 
+            //set confirm message
             var setMessage = function(customer_name){
                 $('#confirm_modal .modal-body').html('<p> Are you sure you want to deleted ? [' + customer_name  + ']</p>');
             };
 
+            //set selected row
             var setSelectedRow=function(row){
                 _selectedRow=row;
             };
@@ -72,10 +78,12 @@ $(document).ready(function(){
                 _selectedID=id;
             };
 
+            //get selected id
             var getSelectedID=function(){
                 return _selectedID;
             };
 
+            //start delete customer
             var deleteCustomer=function(){
                 //alert(_selectedID);
                 return $.ajax({
@@ -86,6 +94,7 @@ $(document).ready(function(){
                 });
 
             };
+            //end delete customer
 
             return {
                 showModal: 		showModal,
@@ -99,10 +108,14 @@ $(document).ready(function(){
             }; //end of return value
         })();//end confirm modal
 
-    //////////////////////////////////////  CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// start confirm modal for delete /////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////  CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
         var customerInfoModal =(function(){
             var _mode;		var _selectedID;	 var _selectedRow;
-
 
             var bindEventHandler = function ()
             {
@@ -114,7 +127,7 @@ $(document).ready(function(){
                            createCustomer()
                            .success(function(response){
 
-                               console.log(response);
+                               //console.log(response);
                                PNotify.removeAll(); //remove all notifications
                                new PNotify({
                                    title: 'Success!',
@@ -172,8 +185,7 @@ $(document).ready(function(){
 
             }();//end bind event handler
 
-
-            //add new invoice
+            //start customer insert
             var createCustomer=function(){
 
                 var serialData=$('#frm-customer').serializeArray();
@@ -186,9 +198,10 @@ $(document).ready(function(){
                 });
 
 
-            }; //end of saveInvoiceInfo
+            };
+            //end customer insert
 
-
+            //start customer update
             var updateCustomer=function(){
                 var serialData=$('#frm-customer').serializeArray();
 
@@ -196,7 +209,7 @@ $(document).ready(function(){
                     name:"customer_id",value: _selectedID
                 });
 
-                console.log(serialData);
+                //console.log(serialData);
 
                 return $.ajax({
                     "dataType":"json",
@@ -206,8 +219,9 @@ $(document).ready(function(){
                 });
 
             };
+            //end customer update
 
-            //field validation
+            //start field validation
             var customermodal_validate_fields = function(){
                 var	stat=1;
 
@@ -251,6 +265,7 @@ $(document).ready(function(){
 
                 return stat; //this will always be executed and return current state
             };
+            //end field validation
 
 
             //set mode of modal, are we going to add new or update??
@@ -335,16 +350,16 @@ $(document).ready(function(){
             }; //end of return value
 
         })();
-//////////////////////////////////////  END CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////
+//////////////////////////////////////  END CUSTOMER MODAL EVENTS ///////////////////////////////////////////////////////////////////////////
 
 
 
-//////////////////////////////////////  CUSTOMER LIST EVENTS ///////////////////////////////////////////////////////////
+//////////////////////////////////////  START CUSTOMER LIST  ////////////////////////////////////////////////////////////////////////////////
         var customer_list = (function () {
             //
             var tbl_customer_list;
 
-
+            //start customer list events
             var bindEventHandlers=(function(){
                 /**
                  *
@@ -383,8 +398,8 @@ $(document).ready(function(){
 
                 $('#tbl_customer_list > tbody').on('click','button[name="remove_customer"]',function(){
                     var row=$(this).closest('tr');
-                    console.log(row);
-                    console.log(row.find('td:eq(0) input[type="checkbox"]').val());
+                    //console.log(row);
+                    //console.log(row.find('td:eq(0) input[type="checkbox"]').val());
                     customer_cofirm_modal.setMessage(row.find('td').eq(1).text());
                     customer_cofirm_modal.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
                     customer_cofirm_modal.setSelectedRow(row);
@@ -400,11 +415,39 @@ $(document).ready(function(){
 
                 });
 
+                $('#tbl_customer_list tbody').on( 'click', 'tr', function () {
+                    var row=$(this).closest('tr');
+                    var id = row.find('td:eq(0) input[type="checkbox"]').val();
+                    var bal = row.find('td').eq(3).text();
+                    $(this).siblings()
+                        .removeClass('active')
+                        .find('td:eq(0) input[type="checkbox"]')
+                        .prop('checked',false); //remove highlights of other rows
+
+                    $(this).attr('class','active')
+                        .find('td:eq(0) input[type="checkbox"]')
+                        .prop('checked',true); //highlight the row that fires the event
+
+                    $('a[href="tab-2"]').find('strong').html( " [ "+$(this).find('td').eq(2).text()+" ] " );
+
+                    //customer display info
+                    customer_display_info.setSelectedRow(row);
+                    customer_display_info.loadCustomerDisplay();
+
+                    //show invoice per click
+                    open_invoice_list.setSelectedId(id);
+                    open_invoice_list.setSelectedBalance(bal);
+                    open_invoice_list.showOpenInvoice();
+                } );
+
             })();
+            //end customer list events
 
 
+            //start initialize customer list datatable
             var initializeInvoiceDatatable=(function(){
                 tbl_customer_list=$('#tbl_customer_list').DataTable({
+                    "paginate": true,
                     "bLengthChange":false,
                     "order": [[ 0, "desc" ]],
                     "oLanguage": {
@@ -458,10 +501,10 @@ $(document).ready(function(){
                             'bSortable': false,
                             'targets': [4],
                             'render': function(data, type, full, meta){
-                                var btn_edit='<button name="edit_customer" class="btn btn-white btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Adjust Invoice"><i class="fa fa-file-text-o"></i> </button>';
-                                var btn_trash='<button name="remove_customer" class="btn btn-white btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
-
-                                return '<center>'+btn_edit+btn_trash+'</center>';
+                                var btn_edit='<button name="edit_customer" class="btn btn-warning btn-sm" style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit Customer"><i class="fa fa-file-text-o"></i> </button>';
+                                var btn_trash='<button name="remove_customer" class="btn btn-danger btn-sm" style="margin-right:-15px;" data-toggle="tooltip" data-placement="top" title="Delete Customer"><i class="fa fa-trash-o"></i> </button>';
+                                var separator ='<span style="padding-left:5px;padding-right: 5px;">'
+                                return '<center>'+ btn_edit + separator + btn_trash+ '</center>';
                             }
                         }//column 4 action buttons
 
@@ -483,17 +526,15 @@ $(document).ready(function(){
                 });
 
             })();
+            //end initialize customer list datatable
 
 
-
-            //show list of invoice of current period
+            //start load customer list
             var showCustomerList=function(){
                 $('#tbl_customer_list tbody').html('<tr><td colspan="8" align="center"><img src="assets/img/ajax-loader-sm.gif"></td></tr>');
 
                 $.getJSON('CustomerManagementController/ActionGetCustomerList', function(response){
                     tbl_customer_list.clear().draw(); //make sure invoice datatable has no rows
-                    console.log(response);
-
 
                     $.each(response,function(index,value){
                         tbl_customer_list.row.add([
@@ -509,7 +550,9 @@ $(document).ready(function(){
                     alert  (xhr.responseText);
                 });
             }();
+            //end load customer list
 
+            //set customer list to last page
             var lastPage=function(){
                 $('#tbl_customer_list_paginate ul li:nth-last-child(2) a').click(); //trigger 2nd to the last link, the last page number
             };
@@ -518,7 +561,6 @@ $(document).ready(function(){
             var createToolBarButton=function(_buttons){
                 $("div.toolbar").html(_buttons);
             };
-
 
             //get the invoice table object instance
             var getTableInstance=function(){
@@ -551,7 +593,7 @@ $(document).ready(function(){
             return {
                 getTableInstance : 		getTableInstance,
                 createToolBarButton: 	createToolBarButton,
-                showInvoiceHistoryList: showCustomerList,
+                showCustomerList:       showCustomerList,
                 addRow: 				addRow,
                 updateRow:				updateRow,
                 lastPage: 				lastPage,
@@ -560,7 +602,238 @@ $(document).ready(function(){
 
         })();
 
+//////////////////////////////////////  END CUSTOMER LIST  ////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+/////////////////////////////////////////////////////////// START CUSTOMER DISPLAY INFO ////////////////////////////////////////////////////////////////
+        var customer_display_info =(function(){
+            var _selectedRow;
+
+            var loadCustomerDisplay=function(){
+
+                //$('#customer-image').image"assets/img/customers/unknown_user.png".src(checkCustomerImage()),
+
+                //SET CUSTOMER NAME
+                $('#customer-name')
+                    .html('<h3><strong> ' + _selectedRow.find('td').eq(1).text() +'</strong></h3>'),
+
+                //SET COMPANY NAME
+                $('#company-name')
+                    .html('<p><i class="fa fa-building"></i> ' + _selectedRow.find('td').eq(2).text() +'</p><br>'),
+
+                //SET ADDRESS
+                $('#address')
+                    .html('<p><i class="fa fa-map-marker"></i> ' + _selectedRow.find('td:eq(0) input[type="checkbox"]').attr('data-address') + '<br>' +
+                            '<i class="fa fa-envelope"></i> ' + _selectedRow.find('td:eq(0) input[type="checkbox"]').attr('data-email') + '<br>' +
+                            '<i class="fa fa-phone"></i> ' + _selectedRow.find('td:eq(0) input[type="checkbox"]').attr('data-pri-contact') + '<br></p>');
+
+
+            }
+
+            //set selected row on datatable
+            var setSelectedRow = function(row) {
+                _selectedRow = row;
+            }
+
+            var checkCustomerImage = function(src){
+                var img;
+                img.onload = function(){
+                    img.src;
+                },
+                img.onerror = function()
+                {
+                    img.src = "assets/img/customers/unknown_user.png"
+                }
+                return img.src;
+            }
+
+            //return
+            return {
+                setSelectedRow:             setSelectedRow,
+                loadCustomerDisplay:        loadCustomerDisplay,
+                checkCustomerImage:         checkCustomerImage
+            }
+
+        })();
+
+/////////////////////////////////////////////////////////// END CUSTOMER DISPLAY INFO /////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////// start open invoice tab table /////////////////////////////////////////////////////////////////////
+
+
+    var open_invoice_list =(function(){
+        var tbl_open_invoice_list; var _selectedID;
+        //start initialize customer list datatable
+        var initializeInvoiceDatatable=(function(){
+            tbl_open_invoice_list = $('#tbl_open_invoice_list').DataTable({
+                "paginate": true,
+                "bLengthChange":false,
+                "order": [[ 0, "desc" ]],
+                "oLanguage": {
+                    "sSearch": "Search: ",
+                    "sProcessing": "Please wait..."
+                },
+                "bFilter":false,
+                "columnDefs": [
+                    {//column 1 invoice number
+                        'bSortable': false,
+                        'targets': [0],
+                        'render': function(data, type, full, meta){
+                            return data;
+                        }
+                    },//column 1 customer id
+
+                    {//column 2 balance
+
+                        'bSortable': false,
+                        'targets': [1],
+                        'render': function(data, type, full, meta){
+                            return data;
+                        }
+                    },//column 2 customer name
+
+                ]
+            });
+
+        })();
+        //end initialize customer list datatable
+
+        var showOpenInvoice=function(){
+            $('#tbl_open_invoice_list tbody').html('<tr><td colspan="8" align="center"><img src="assets/img/ajax-loader-sm.gif"></td></tr>');
+            $.getJSON('CustomerManagementController/ActionGetOpenInvoiceList',{customer_id:_selectedID}, function(response){
+                tbl_open_invoice_list.clear().draw(); //make sure invoice datatable has no rows
+                $.each(response,function(index,value){
+                    tbl_open_invoice_list.row.add([
+                        value.invoice_no,
+                        value.invoice_balance
+                    ]).draw();
+
+                });
+
+            }).fail(function(xhr){
+                alert  (xhr.responseText);
+            });
+        };
+        //end load customer list
+
+        var setSelectedId = function(id)
+        {
+            _selectedID = id;
+        };
+
+        var setSelectedBalance = function(bal)
+        {
+            $('#total_invoice_balance').html('<h2>Php  ' + bal + '</h2>');
+        };
+
+        return{
+            showOpenInvoice     :   showOpenInvoice,
+            setSelectedId       :   setSelectedId,
+            setSelectedBalance  :   setSelectedBalance
+        };
+
+    })();
+
+/////////////////////////////////////////////////////////// end open invoice tab table /////////////////////////////////////////////////////////////////////
+
+
+    var tab_customer_ledger=(function(){
+
+    });
+
+/////////////////////////////////////////////////////////// start customer ledger table /////////////////////////////////////////////////////////////////////
+     var customer_ledger = (function(){
+        var tbl_customer_ledger;
+        var _selectedID;
+
+         var initializeInvoiceDatatable=(function(){
+             tbl_customer_ledger = $('#tbl_customer_ledger').DataTable({
+                 "paginate": true,
+                 "bLengthChange":false,
+                 "order": [[ 0, "desc" ]],
+                 "oLanguage": {
+                     "sSearch": "Search: ",
+                     "sProcessing": "Please wait..."
+                 },
+                 "bFilter":false,
+                 "columnDefs": [
+                     {//column 1 reference number
+                         'bSortable': false,
+                         'targets': [0],
+                         'render': function(data, type, full, meta){
+                             return data;
+                         }
+                     },//column 1 customer id
+
+                     {//column 2 invoice amount
+
+                         'bSortable': false,
+                         'targets': [1],
+                         'render': function(data, type, full, meta){
+                             return data;
+                         }
+                     },//column 2 invoice amount
+
+                     {//column 3 payment amount
+
+                         'bSortable': false,
+                         'targets': [2],
+                         'render': function(data, type, full, meta){
+                             return data;
+                         }
+                     },//column 3 payment amount
+
+                     {//column 4 balance amount
+
+                         'bSortable': false,
+                         'targets': [3],
+                         'render': function(data, type, full, meta){
+                             return data;
+                         }
+                     },//column 4 balance amount
+
+                 ]
+             });
+
+         })();
+         //end initialize customer list datatable
+
+         // start load customer ledger
+         var showCustomerLedger=function(){
+             $('#tbl_customer_ledger tbody').html('<tr><td colspan="8" align="center"><img src="assets/img/ajax-loader-sm.gif"></td></tr>');
+             $.getJSON('CustomerManagementController/ActionGetCustomerLedger',{customer_id:_selectedID}, function(response){
+                 tbl_open_invoice_list.clear().draw(); //make sure invoice datatable has no rows
+                 $.each(response,function(index,value){
+                     tbl_open_invoice_list.row.add([
+                         value.ref_no,
+                         value.inv_amount,
+                         value.pay_amount,
+                         value.balance
+                     ]).draw();
+
+                 });
+
+             }).fail(function(xhr){
+                 alert  (xhr.responseText);
+             });
+         };
+         //end load customer list
+
+         var setSelectedId = function(id)
+         {
+             _selectedID = id;
+         };
+
+         return{
+             setSelectedId : setSelectedId,
+             showCustomerLedger : showCustomerLedger
+         };
+
+     })();
+/////////////////////////////////////////////////////////// end customer ledger tab table /////////////////////////////////////////////////////////////////////
 
 		//write toolbar on datatable
 		var _btnNew='<button name="new-customer" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Create New Customer" ><i class="fa fa-users"></i> Create New Customer</button>';

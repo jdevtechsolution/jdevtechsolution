@@ -20,6 +20,20 @@ class CustomerManagementController extends CI_Controller {
         );
     }
 
+    function ActionGetOpenInvoiceList()
+    {
+        echo json_encode(
+            $this->CustomerManagementModel->ReturnOpenInvoiceList()
+        );
+    }
+
+    function ActionGetCustomerLedger()
+    {
+        echo json_encode(
+            $this->CustomerManagementModel->ReturnCustomerLedger()
+        );
+    }
+
     function InsertCustomerInfo()
     {
         if($this->CustomerManagementModel->CreateCustomer())

@@ -37,9 +37,6 @@ class CustomerManagementModel extends CI_Model {
 		return $rows;
 	}
 
-
-
-
     function CreateCustomer()
     {
         try
@@ -157,7 +154,69 @@ class CustomerManagementModel extends CI_Model {
         return $rows;
     }
 	
-	
+	function ReturnOpenInvoiceList(){
+        $rows=array();
+        $customer_id = $this->input->get('customer_id',TRUE);
+        $sql= "select
+                    sales_invoice_id,
+                    invoice_no,
+                    0 as invoice_balance
+              from sales_invoice_info
+              where status = 'Open' and is_deleted = 0 and is_active = 1
+              and customer_id = $customer_id";
+
+        $query = $this->db->query($sql);
+
+        foreach ($query->result() as $row)
+        {
+            $rows[]=$row; //assign each row of query in array
+        }
+
+        return $rows;
+    }
+
+    function ReturnCustomerLedger()
+    {
+        $rows=array();
+        $customer_id = $this->input->get('customer_id',TRUE);
+        $sql = "set @bal:=0.00;";
+        $this->db->query($sql);
+
+        $sql= "select
+            x.*,
+            @bal := @bal + (x.pay_amount - x.inv_amount) as balance
+            from (
+                select
+                si.invoice_no as ref_no,
+                si.customer_id,
+                si.invoice_amount as inv_amount,
+                (0) as pay_amount,
+                si.txn_date
+            from sales_invoice_info as si
+            where si.is_active = true and si.is_deleted = 0 and si.status = 'Open'
+                  and si.customer_id = $customer_id
+
+            union all
+
+            select
+                sp.sales_payment_receipt_no as ref_no,
+                sp.customer_id,
+                (0) as inv_amount,
+                sp.sales_payment_amount as pay_amount,
+                sp.txn_date
+            from sales_payment as sp
+            where sp.is_deleted = 0 and sp.is_active = 1
+                  and sp.customer_id = $customer_id ) as x order by txn_date,ref_no";
+
+        $query = $this->db->query($sql);
+
+        foreach ($query->result() as $row)
+        {
+            $rows[]=$row; //assign each row of query in array
+        }
+
+        return $rows;
+    }
 }
 
 

@@ -12,10 +12,6 @@ class ItemManagementController extends CI_Controller {
 	function index(){		// the default function that is called if no function is given in the uri		
 		$this->load->view('item_management');
 	}
-	
-	
-	
-	
 }
 	
 ?>
