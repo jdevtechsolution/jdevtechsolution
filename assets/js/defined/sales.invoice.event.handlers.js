@@ -235,7 +235,7 @@ $(document).ready(function(){
                                     updateCachedData(this); //update cached data
 									setLineTotal(  row , getLineTotal(row)  ); //compute line total
 
-                                    setFooterDetails();
+                                    reComputeFooterDetails();
 									formatEditableNumberCells( row ); //set number format
 									
 									$('#plu_typehead').focus();
@@ -326,7 +326,7 @@ $(document).ready(function(){
 					};
 
                     //set all cart footer info, total invoice, total discount, percent discount
-                    var setFooterDetails=function(){
+                    var reComputeFooterDetails=function(){
                         var _totalDiscount=0, _totalInvoice= 0, _totalUndiscounted=0;
 
                         tbl_item_cart.rows().eq(0).each(function(index){
@@ -338,13 +338,14 @@ $(document).ready(function(){
                         });
 
                         //alert(_totalDiscount);
-                        $('#cell_total_discount').html('<strong>'+accounting.formatNumber(_totalDiscount,2)+'</strong>');
-                        $('#cell_total_invoice').html('<strong>'+accounting.formatNumber(_totalInvoice,2)+'</strong>');
+                        $('#cell_total_discount').html('<strong class="text-navy">'+accounting.formatNumber(_totalDiscount,2)+'</strong>');
+                        $('#cell_total_invoice').html('<strong class="text-navy">'+accounting.formatNumber(_totalUndiscounted,2)+'</strong>');
 
                         //compute total percentage
 
                         var _percentDisc=(_totalDiscount/_totalUndiscounted)*100;
-                        $('#cell_discount_percent').html('<strong>'+_percentDisc+'%</strong>');
+                        $('#cell_discount_percent').html('<strong class="text-navy">'+accounting.formatNumber(_percentDisc)+'%</strong>');
+                        $('#cell_net_amount').html('<strong>'+accounting.formatNumber(_totalInvoice,2)+'</strong>');
 
                     };
 					
@@ -407,7 +408,8 @@ $(document).ready(function(){
 							return tbl_item_cart;
 						},
 						
-						removeRows: removeRows
+						removeRows: removeRows,
+                        reComputeFooterDetails: reComputeFooterDetails
 							
 						
 					
@@ -437,7 +439,8 @@ $(document).ready(function(){
 											accounting.formatNumber(data.srp,2),
 											""
 										]);
-										
+                                        itemCartListModule.reComputeFooterDetails();
+
 										return ""; //specifies what would be going to display			
 									},
 									afterSelect:function(data){ //callback after item is selected, data here depends on the content of textbox

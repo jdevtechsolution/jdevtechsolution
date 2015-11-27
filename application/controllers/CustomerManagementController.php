@@ -50,14 +50,16 @@ class CustomerManagementController extends CI_Controller {
     }
 
     function DeleteCustomerInfo(){
-        echo json_encode(
-            array(
-                'stat'=>'success',
-                'msg'=>'Customer successfully updated.',
-                'id'=> $this->input->post('id',TRUE)
-            )
-        );
 
+        if($this->CustomerManagementModel->DeleteCustomer()){
+            echo json_encode(
+                array(
+                    'stat'=>'success',
+                    'msg'=>'Customer successfully deleted.',
+                    'id'=> $this->input->post('customer_id',TRUE)
+                )
+            );
+        }
 
     }
 	

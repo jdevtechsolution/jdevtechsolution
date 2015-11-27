@@ -261,8 +261,8 @@
 																					<tr>
 																						<td colspan="2" align="right"><strong>Discount %</strong></td>
 																						<td id="cell_discount_percent" align="right" style="color:red;"><strong>0%</strong></td>
-																						<td align="right"><strong>Net Amount</strong></td>																						
-																						<td align="right" style="color:red;"><strong>0.00</strong></td>
+																						<td align="right"><strong>Net Amount</strong></td>
+																						<td id="cell_net_amount" align="right" style="color:red;"><strong>0.00</strong></td>
 																						<td>Php</td>
 																					</tr>
 																				</tfoot>
