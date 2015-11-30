@@ -12,6 +12,8 @@
 
 SET FOREIGN_KEY_CHECKS=0;
 
+DROP DATABASE IF EXISTS `jcorev2`;
+
 CREATE DATABASE `jcorev2`
     CHARACTER SET 'latin1'
     COLLATE 'latin1_swedish_ci';
@@ -114,9 +116,9 @@ CREATE TABLE `customer_info` (
   `deleted_by` int(11) DEFAULT NULL,
   `date_deleted` datetime DEFAULT NULL,
   `is_active` bit(1) DEFAULT b'1',
-  `is_delete` bit(1) DEFAULT b'0',
+  `is_deleted` bit(1) DEFAULT b'0',
   PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
 #
 # Structure for the `department_info` table : 
@@ -213,9 +215,10 @@ CREATE TABLE `sales_invoice_info` (
   `date_modified` timestamp NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   `created_by_user` int(11) DEFAULT NULL,
   `modified_by_user` int(11) DEFAULT NULL,
+  `status` varchar(65) DEFAULT 'Open' COMMENT 'Open,Closed,Partially Paid',
   PRIMARY KEY (`sales_invoice_id`),
   UNIQUE KEY `invoice_no` (`invoice_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
 #
 # Structure for the `sales_invoice_items` table : 
@@ -230,6 +233,44 @@ CREATE TABLE `sales_invoice_items` (
   `item_discount` decimal(20,2) DEFAULT '0.00',
   `item_unit_price` decimal(20,2) DEFAULT '0.00',
   `item_line_total` decimal(20,2) DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# Structure for the `sales_payment` table : 
+#
+
+DROP TABLE IF EXISTS `sales_payment`;
+
+CREATE TABLE `sales_payment` (
+  `sales_payment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_payment_receipt_no` varchar(65) DEFAULT '',
+  `customer_id` int(11) DEFAULT '0',
+  `sales_payment_amount` decimal(19,5) DEFAULT '0.00000',
+  `sales_payment_remarks` varchar(254) DEFAULT '',
+  `txn_date` datetime DEFAULT NULL,
+  `created_by` int(11) DEFAULT '0',
+  `modified_by` int(11) DEFAULT '0',
+  `deleted_by` int(11) DEFAULT '0',
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` timestamp NULL DEFAULT NULL,
+  `date_deleted` datetime DEFAULT NULL,
+  `is_active` bit(1) DEFAULT b'1',
+  `is_deleted` bit(1) DEFAULT b'0',
+  PRIMARY KEY (`sales_payment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+#
+# Structure for the `sales_payment_details` table : 
+#
+
+DROP TABLE IF EXISTS `sales_payment_details`;
+
+CREATE TABLE `sales_payment_details` (
+  `payment_details_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sales_payment_id` int(11) DEFAULT '0',
+  `invoice_no` varchar(65) DEFAULT '',
+  `payment_details_amount` decimal(19,5) DEFAULT '0.00000',
+  PRIMARY KEY (`payment_details_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 #

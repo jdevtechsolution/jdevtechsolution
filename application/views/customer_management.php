@@ -115,25 +115,14 @@
 												<table id="tbl_customer_ledger" class="table table-bordered">
 													<thead>
 														<tr>
-															<td></td>																												
-															<td>Invoice #</td>
-															<td>Receipt #</td>
-															<td>Debit</td>
-															<td>Credit</td>
+															<td>Reference #</td>
+															<td>Invoice Amount</td>
+															<td>Payment Amount</td>
 															<td>Balance</td>
 														</tr>
 													</thead>
 													<tbody>
-														<?php for($i=0;$i<=10;$i++){ ?>
-														<tr>
-															<td><input type="checkbox"></td>
-															<td>2015101000001</td>
-															<td>na</td>
-															<td>1,200.00</td>
-															<td>0.00</td>
-															<td>1,200.00</td>
-														</tr>
-														<?php } ?>
+
 													</tbody>
 												</table>	
 										</div>
@@ -171,32 +160,34 @@
 						
 					</div>
 					
-					<div class="col-lg-4">
+					<div id="customer-display-info " class="col-lg-4">
 						<div class="contact-box  animated fadeInRight">
 							<a href="#">
 								<div class="col-sm-4">
 									<div class="text-center">
-										<img alt="image" class="img-circle m-t-xs img-responsive" src="assets/img/profile_small.jpg">
+										<img id="customer-image" alt="image" class="img-circle m-t-xs img-responsive" src="assets/img/customers/unknown_user.png" style="background-color: #808080" >
 										<div class="m-t-xs font-bold">Software Developer</div>
 									</div>
 								</div>
 								<div class="col-sm-8">
-									<h3><strong>Christian Rueda</strong></h3>
-									<p><i class="fa fa-archive"></i> JDEV IT Business Solution</p><br>
-									
-									<address>
-										<i class="fa fa-map-marker"></i> San Jose, San Simon, Pampanga<br>
-										<i class="fa fa-map-marker"></i> chrisrueda14@yahoo.com<br>
-										<i class="fa fa-list-alt"></i> 322-3542<br>																	
-									</address>
+									<span id ="customer-name">
+                                         <h3><strong></strong></h3>
+                                    </span>
+                                    <span id ="company-name">
+                                        <p><i ></i></p><br>
+                                    </span>
+									<span id="address">
+										 <i ></i><br>
+                                         <i ></i><br>
+										 <i ></i><br>
+									</span>
 								</div>
 								
 								<div class="text-right">									
 									<a class="btn btn-xs btn-white"><i class="fa fa-pencil"></i> Edit Customer Info </a>
 									<a class="btn btn-xs btn-white"><i class="fa fa-credit-card"></i> Post Payment </a>													
 								</div>
-								
-								
+
 							</a>
 						</div>						
 						
@@ -208,8 +199,8 @@
 							<div class="panel-heading">                            
 									<div class="panel-options">									
 										<ul class="nav nav-tabs">
-											<li class="active"><a data-toggle="tab" href="#tab-invoice-1">Open Invoices</a></li>
-											<li class=""><a data-toggle="tab" href="#tab-invoice-2">Invoice Details</a></li>
+											<li class="active"><a data-toggle="tab" href="#tab-invoice-1" style="font-size: 12px;">Open Invoices</a></li>
+											<li class=""><a data-toggle="tab" href="#tab-invoice-2" style="font-size: 12px;">Open Sales Order</a></li>
 										</ul>
 									</div>
 							</div>
@@ -220,7 +211,7 @@
 											<div class="row">
 												<div class="col-xs-12">
 													<span>Total Open Invoice</span>
-													<h2>$ 1,231,809</h2>										
+													<span id="total_invoice_balance"><h2>Php 0.00</h2></span>
 													<div class="text-center m">
 														<span id="sparkline8"></span>
 													</div>    
@@ -230,22 +221,15 @@
 											<br />
 											<div class="row">
 												<div class="col-xs-12">
-													<table id="tbl_past_due" class="table table-bordered">							
+													<table id="tbl_open_invoice_list" class="table table-bordered">
 														<thead>
 															<tr>
-																<td>Invoice #</td>																
-																												
+																<td>Invoice #</td>
 																<td>Balance</td>
 															</tr>
 														</thead>
 														<tbody>
-															<?php for($i=0;$i<=5;$i++){ ?>
-																<tr>
-																	<td><?php echo $i; ?></td>																			
-																	
-																	<td>1,000,000.00</td>
-																</tr>
-															<?php } ?>
+
 														</tbody>
 													</table>	
 												</div>
@@ -297,22 +281,23 @@
                                 <div class="modal-dialog"  style="width:50%;">
                                 <div class="modal-content animated bounceInRight">
                                         
-										
-										
-                                        <div class="modal-body"><!--/modal body-->					
-											<div class="x_panel"><!--/panel-->
-												<div class="x_title">
-													<h2>Customer Information <small>Please enter Customer Information.</small></h2>
-														<!--/<ul class="nav navbar-right panel_toolbox">  -->
-														<!--/	<li><a class="collapse-link">  -->
-														<!--/		<i class="fa fa-chevron-up"></i></a>  -->
-														<!--/	</li>										  -->
-														<!--/	<li><a data-dismiss="modal"><i class="fa fa-close"></i></a>  -->
-														<!--/	</li>  -->
-														<!--/</ul> -->
-													<div class="clearfix"></div>
-												</div>
+										<div class="modal-header">
+                                            <div class="x_title">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <h2>Customer Information <small>Please enter Customer Information.</small></h2>
+                                                    </li>
+                                                </ul>
 
+
+
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+
+										
+                                        <div class="modal-body"><!--/modal body-->
+                                            <div class="x_panel"><!--/panel-->
 												<div class="x_content"><!--/panel content-->
 														<form id="frm-customer">
 															<div class="row">
