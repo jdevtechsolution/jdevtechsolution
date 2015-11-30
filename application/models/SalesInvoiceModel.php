@@ -23,6 +23,7 @@ class SalesInvoiceModel extends CI_Model {
 				CONCAT(a.prod_code,'  ',a.prod_description) as name,
 				a.prod_description as description,
 				a.prod_code,a.prod_srp as srp,0 as discount,
+				a.unit_id,
 				b.unit_name
 			FROM product_info as a
 			LEFT JOIN unit_info as b ON a.unit_id=b.unit_id";
@@ -35,6 +36,7 @@ class SalesInvoiceModel extends CI_Model {
 		return $rows;
 	}
 
+
 	function ReturnInvoiceHistoryList($start,$end){
 		$rows=array();
 		$sql="SELECT 
@@ -42,16 +44,17 @@ class SalesInvoiceModel extends CI_Model {
 						a.sales_invoice_id,
 						a.bill_address,
 						a.ship_address,
-						a.remarks
+						a.remarks,
+						DATE_FORMAT(a.txn_date,'%m/%d/%Y')
 					)as record_info,
-					
+
+					DATE_FORMAT(a.date_created,'%m/%d/%Y')as txn_date,
 					a.invoice_no,
-					
-					DATE_FORMAT(a.txn_date,'%m/%d/%Y')as txn_date,
-					
 					CONCAT_WS('|',
 							a.customer_id,
-							CONCAT_WS(' ',b.fname,b.mname,b.lname)
+							CONCAT_WS(' ',b.fname,b.mname,b.lname),
+							b.email,
+						    b.pri_contact
 					)as customer,
 					'Admin' as seller,
 					a.invoice_amount,
@@ -75,14 +78,25 @@ class SalesInvoiceModel extends CI_Model {
 	function ReturnInvoiceCartItems($id){
 		$rows=array();
 		$sql="SELECT 
-				a.prod_id,
-				CONCAT_WS('|',a.prod_id,b.prod_description)as item,
-				a.item_qty,a.item_discount,
-				a.item_unit_price,a.item_line_total 
-				FROM sales_invoice_items as a 
-				LEFT JOIN product_info as b
-				ON a.prod_id=b.prod_id 
-			WHERE a.sales_invoice_id=$id";		
+                    a.prod_id,
+                    CONCAT_WS('|',a.prod_id,CONCAT(b.prod_description,' [ ',c.unit_name,' ]'),a.unit_id)as item,
+                    a.item_qty,
+                    a.item_discount,
+                    a.item_unit_price,
+                    a.item_line_total
+
+				FROM
+				  sales_invoice_items as a
+				LEFT JOIN
+				  product_info as b
+				ON
+				  a.prod_id=b.prod_id
+                LEFT JOIN
+                  unit_info as c
+                ON
+                  a.unit_id=c.unit_id
+			    WHERE
+			      a.sales_invoice_id=$id";
 		$query = $this->db->query($sql);
 		foreach ($query->result() as $row)
 		{
@@ -104,7 +118,8 @@ class SalesInvoiceModel extends CI_Model {
 					'txn_date' => date('Y-m-d',strtotime($this->input->post('date_due',TRUE))),
 					'bill_address'=>$this->input->post('billing_address',TRUE),
 					'ship_address'=>$this->input->post('ship_address',TRUE),
-					'remarks'=>$this->input->post('remarks',TRUE)
+					'remarks'=>$this->input->post('remarks',TRUE),
+
 				);
 				
 				$this->db->where('sales_invoice_id',$invoiceid);
@@ -122,7 +137,8 @@ class SalesInvoiceModel extends CI_Model {
 				$discount=$this->input->post('discount',TRUE);
 				$unitprice=$this->input->post('unitprice',TRUE);
 				$linetotal=$this->input->post('linetotal',TRUE);
-				
+                $unitid=$this->input->post('unitid',TRUE);
+
 				$datas = array();
 				for($i=0;$i<=count($prodid)-1;$i++){		
 					$datas[]=array(
@@ -131,7 +147,8 @@ class SalesInvoiceModel extends CI_Model {
 						'item_qty'=>floatval($unitqty[$i]),
 						'item_discount'=>floatval($discount[$i]),
 						'item_unit_price'=>floatval($unitprice[$i]),
-						'item_line_total'=>floatval($linetotal[$i])
+						'item_line_total'=>floatval($linetotal[$i]),
+                        'unit_id'=>$unitid[$i]
 					);		
 				}		
 				$this->db->insert_batch('sales_invoice_items', $datas) or die(json_encode($this->error)); 
@@ -170,6 +187,7 @@ class SalesInvoiceModel extends CI_Model {
 				$discount=$this->input->post('discount',TRUE);
 				$unitprice=$this->input->post('unitprice',TRUE);
 				$linetotal=$this->input->post('linetotal',TRUE);
+                $unitid=$this->input->post('unitid',TRUE);
 				
 				$datas = array();
 				for($i=0;$i<=count($prodid)-1;$i++){		
@@ -179,7 +197,8 @@ class SalesInvoiceModel extends CI_Model {
 						'item_qty'=>$unitqty[$i],
 						'item_discount'=>$discount[$i],
 						'item_unit_price'=>$unitprice[$i],
-						'item_line_total'=>$linetotal[$i]
+						'item_line_total'=>$linetotal[$i],
+                        'unit_id'=>$unitid[$i]
 					);		
 				}		
 				$this->db->insert_batch('sales_invoice_items', $datas); 

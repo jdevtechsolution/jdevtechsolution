@@ -18,7 +18,10 @@ class SalesInvoiceController extends CI_Controller {
 	function ActionGetProductList(){ //returns returns array of object of product
 		echo json_encode($this->SalesInvoiceModel->ReturnProductList());
 	}
-	
+
+    function test(){
+        echo "hello";
+    }
 	
 	function ActionSaveInvoiceInfo(){
 		if($this->SalesInvoiceModel->CreateSalesInvoice()){
@@ -61,7 +64,8 @@ class SalesInvoiceController extends CI_Controller {
             $this->SalesInvoiceModel->ReturnInvoiceHistoryList($start,$end)
 		);
 	}
-	
+
+
 	function ActionGetInvoiceCartItems(){
 		$id=$this->input->get('id',TRUE);
 		

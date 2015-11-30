@@ -11,7 +11,7 @@ var period=(function(){
         },
 
         getMonth : function(){
-            var _month ="0"+(fullDate.getMonth()+1).toString(); //always concatinate "0" to the first character
+            var _month ="0"+(fullDate.getMonth()+1).toString(); //always concatinate "0" to the left side
             return  _month.slice(-2);
         },
 

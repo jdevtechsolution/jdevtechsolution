@@ -74,9 +74,12 @@
 		
         <div class="wrapper wrapper-content"><!-- /main content area -->
 				<div class="row">
+
+                    <!-- side options-->
 					<div class="col-lg-2">
 						<div class="ibox float-e-margins">
 							<div class="ibox-content mailbox-content">
+
 								<div class="file-manager">
 														
 									<button id="btn_new_invoice" type="button" class="btn btn-block btn-primary compose-mail" data-toggle="modal" data-target="#invoice_modal">
@@ -101,9 +104,11 @@
 									
 									<div class="clearfix"></div>
 								</div>
+
 							</div>
 						</div>
-					</div>
+					</div><!-- side options-->
+
 					<div class="col-lg-10 animated fadeInRight">
 							<div class="mail-box-header" style="margin-bottom:-25px;">
 								<h2 style="block:inline;"><i class="fa fa-clipboard"></i> Sales Invoice </h2>
@@ -119,17 +124,20 @@
 													  <i class="fa fa-clipboard"></i> Today's Invoice  [<a href="#" id="link_view_previous">View Previous?</a>]
 										</div><!-- /. tools -->
 											
-									
+									    <!-- navigation tab caption-->
 										<ul class="nav nav-tabs">
 											<li class="active"><a data-toggle="tab" href="#tab-1">Invoice History</a></li>
 											<li class=""><a data-toggle="tab" href="#tab-2">Invoice #  [ <strong class="text-navy"> Nothing selected </strong> ] </a></li>
-										</ul>
+										</ul><!-- navigation tab caption-->
+
+
 									</div>
 								</div>
 
 								<div class="panel-body">
 
 									<div class="tab-content">
+                                        <!-- / tab 1-->
 										<div id="tab-1" class="tab-pane active">
 												<table id="tbl_invoice_list" class="table table-bordered">
 													<thead>
@@ -148,11 +156,110 @@
 														
 													</tbody>
 												</table>	
-										</div>
-										
-										<div id="tab-2" class="tab-pane">
-										
-										</div>
+										</div><!-- / tab 1-->
+
+                                        <!-- / tab 2-->
+										<div id="tab-2" class="tab-pane"><!-- / tab 2-->
+
+
+
+                                            <div class="row"><!-- / row 1 / tab 2 -->
+                                                <div class="col-lg-12">
+                                                    <div class="wrapper wrapper-content animated fadeInRight">
+                                                        <div class="ibox-content p-xl">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <h5>From:</h5>
+                                                                    <address>
+                                                                        <strong>JDEV IT Business Solution</strong><br>
+                                                                        Diamond Street, Balibago, Angeles City, Pampanga<br>
+                                                                        jdevtechsolution@gmail.com<br>
+                                                                        <abbr title="Phone">P:</abbr> (045) 322-3542
+                                                                    </address>
+                                                                </div>
+
+                                                                <div class="col-sm-6 text-right">
+                                                                    <span id="span_invoice_details">
+                                                                        <h4>Invoice No.</h4>
+                                                                        <h4 class="text-navy">INV-000567F7-00</h4>
+                                                                        <span>To:</span>
+                                                                        <address>
+                                                                            <strong>Paul Christian Rueda</strong><br>
+                                                                            San Jose, San Simon, Pampanga<br>
+                                                                            chrisrueda14@yahoo.com<br>
+                                                                            <abbr title="Phone">P:</abbr> (120) 9000-4321
+                                                                        </address>
+                                                                        <p>
+                                                                            <span><strong>Invoice Date:</strong> Marh 18, 2014</span><br/>
+                                                                            <span><strong>Due Date:</strong> March 24, 2014</span>
+                                                                        </p>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="table-responsive m-t">
+                                                                <table id="tbl_doc_invoice_details" class="table invoice-table">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>Item Description</th>
+                                                                        <th>Quantity</th>
+                                                                        <th>Unit Price</th>
+                                                                        <th>Tax</th>
+                                                                        <th>Total Price</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td><div><strong>Intel CPU Octa Core 3.2 Ghz</strong></div>
+                                                                            <small>One of the fastest CPU in the market right now.</small></td>
+                                                                        <td>10 pcs</td>
+                                                                        <td>$26.00</td>
+                                                                        <td>$5.98</td>
+                                                                        <td>$31,98</td>
+                                                                    </tr>
+
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div><!-- /table-responsive -->
+
+                                                            <table class="table invoice-total">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td><strong>Sub Total :</strong></td>
+                                                                    <td>$1026.00</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>TAX :</strong></td>
+                                                                    <td>$235.98</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><strong>TOTAL :</strong></td>
+                                                                    <td>$1261.98</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="text-right">
+                                                                <button class="btn btn-primary"><i class="fa fa-dollar"></i> Make A Payment</button>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- / row 1 / tab 2 -->
+
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-lg-10">
+                                                    <button class="btn btn-primary"><i class="fa fa-print"></i> Print Invoice</button>
+                                                    <button class="btn btn-success"><i class="fa fa-download"></i> Generate PDF</button>
+                                                </div>
+                                            </div>
+
+
+                                        </div> <!-- / tab 2-->
+
 									</div>
 								</div>
 							</div>
@@ -253,15 +360,15 @@
 																				<tfoot>
 																					<tr>
 																						<td colspan="2" align="right" id="td_total_discount"><strong>Total Discount</strong></td>
-																						<td id="cell_total_discount" align="right" style="color:red;"><strong>0.00</strong></td>
+																						<td id="cell_total_discount" align="right"><strong>0.00</strong></td>
 																						<td align="right"><strong>Total Invoice</strong></td>																						
-																						<td id="cell_total_invoice" align="right" style="color:red;"><strong>0.00</strong></td>
+																						<td id="cell_total_invoice" align="right"><strong>0.00</strong></td>
 																						<td>Php</td>
 																					</tr>
 																					<tr>
 																						<td colspan="2" align="right"><strong>Discount %</strong></td>
-																						<td id="cell_discount_percent" align="right" style="color:red;"><strong>0%</strong></td>
-																						<td align="right"><strong>Net Amount</strong></td>
+																						<td id="cell_discount_percent" align="right"><strong>0%</strong></td>
+																						<td align="right"><h3>Net Amount</h3></td>
 																						<td id="cell_net_amount" align="right" style="color:red;"><strong>0.00</strong></td>
 																						<td>Php</td>
 																					</tr>
@@ -270,13 +377,14 @@
 																		</div>
 																	</div>
 															</div>
-															
-															
+
+
+
 															<div class="row">
 																<div class="col-lg-12" style="">
 																	
 																	
-																		 <div class="panel-heading" style="margin-left:-15px;margin-top:-20px;">
+																		 <div id="tab_invoice_heading" class="panel-heading" style="margin-left:-15px;margin-top:-20px;">
 																			
 																			<div class="panel-options">
 
@@ -286,6 +394,7 @@
 																					<li class=""><a data-toggle="tab" href="#tab-modal-3">Re<u>m</u>arks</a></li>
 																				</ul>
 																			</div>
+
 																		</div>
 																		
 																		<div class="panel-body">
@@ -322,6 +431,8 @@
 																
 																
 															</div>
+
+
 														</div>
 														
 														

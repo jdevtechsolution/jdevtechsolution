@@ -6,22 +6,32 @@ $(document).ready(function(){
 
 /**********************************************************************************************************************************************************/
 		//invoice list module,the invoice table
-		var invoiceListModule=(function(){
+		var tableInvoiceModule=(function(){
 					var tbl_invoice_list;
 					
 					
 					var bindEventHandlers=(function(){
                                 $('#tbl_invoice_list > tbody').on('click','tr',function(){
-                                    $(this).siblings()
-                                        .removeClass('active')
-                                        .find('td:eq(0) input[type="checkbox"]')
-                                        .prop('checked',false); //remove highlights of other rows
 
-                                    $(this).attr('class','active')
-                                        .find('td:eq(0) input[type="checkbox"]')
-                                        .prop('checked',true); //highlight the row that fires the event
+                                    highlightRow(this); //highlight the row that fires click event
 
-                                    $('a[href="#tab-2"]').find('strong').html( " "+$(this).find('td').eq(1).text()+" " );
+                                    var _cell=$(this).find('td');
+                                    $('a[href="#tab-2"]').html( _cell.eq(1).text()+" <span> [ Loading details... <img src='assets/img/ajax-loader-arrow.gif'> ]</span>" );
+
+
+
+                                    documentInvoiceInfoModule.writeContent({
+                                        "invoice_id"            :       _cell.eq(0).find('input[type="checkbox"]').val(),
+                                        "invoice_no"            :       _cell.eq(1).text(),
+                                        "customer_name"         :       _cell.eq(3).text(),
+                                        "billing_address"       :       _cell.eq(0).find('input[type="checkbox"]').attr('data-bill-address'),
+                                        "email"                 :       _cell.eq(3).attr('data-email'),
+                                        "invoice_date"          :       _cell.eq(2).text(),
+                                        "due_date"              :       _cell.eq(0).find('input[type="checkbox"]').attr('data-due-date'),
+                                        "primary_contact"       :       _cell.eq(3).attr('data-primary-contact')
+
+                                    });
+
 
                                 });
 
@@ -31,12 +41,12 @@ $(document).ready(function(){
 								$('#tbl_invoice_list tbody').on('click','button[name="edit_invoice"]',function(){
 									var row=$(this).closest('tr');
 									
-									invoiceInfoModalModule.setMode("edit"); //set mode to editing
-									invoiceInfoModalModule.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
-									invoiceInfoModalModule.setSelectedRow(row); //remember the row we are going to update
+									modalInvoiceInfoModule.setMode("edit"); //set mode to editing
+									modalInvoiceInfoModule.setSelectedID(row.find('td:eq(0) input[type="checkbox"]').val()); //what is the id of the invoice we are going to update
+									modalInvoiceInfoModule.setSelectedRow(row); //remember the row we are going to update
 									
 									//object details of modal
-									invoiceInfoModalModule.setDetails({
+									modalInvoiceInfoModule.setDetails({
 										"invoice_id"	:		row.find('td:eq(0) input[type="checkbox"]').val(),
 										"invoice_no"	:		row.find('td').eq(1).text(),
 										"txn_date"		:		row.find('td').eq(2).text(),
@@ -48,7 +58,7 @@ $(document).ready(function(){
 									});
 									
 									//show invoice info modal
-									invoiceInfoModalModule.showModal();
+									modalInvoiceInfoModule.showModal();
 																	
 								});
 					
@@ -71,7 +81,7 @@ $(document).ready(function(){
 									'render': function(data, type, full, meta){
                                        // alert(data);
 										var _arrData=data.split('|');
-										return '<input type="checkbox" value="'+_arrData[0]+'" data-bill-address="'+_arrData[1]+'" data-ship-address="'+_arrData[2]+'" data-remarks="'+_arrData[3]+'">';
+										return '<input type="checkbox" value="'+_arrData[0]+'" data-bill-address="'+_arrData[1]+'" data-ship-address="'+_arrData[2]+'" data-remarks="'+_arrData[3]+'" data-due-date="'+_arrData[4]+'">';
 									}
 								},//column 1
 								{//column 3
@@ -111,7 +121,9 @@ $(document).ready(function(){
 								});
 								
 								$(row).find('td').eq(3).attr({
-									"data-customer-id": data[3].split('|')[0]
+									"data-customer-id": data[3].split('|')[0],
+                                    "data-email": data[3].split('|')[2],
+                                    "data-primary-contact": data[3].split('|')[3]
 								});
 							}
 
@@ -181,7 +193,18 @@ $(document).ready(function(){
 					};
 				
 				
-				
+				    var highlightRow=function(row){
+                        $(row).siblings()
+                            .removeClass('active')
+                            .find('td:eq(0) input[type="checkbox"]')
+                            .prop('checked',false); //remove highlights of other rows
+
+                        $(row).attr('class','active')
+                            .find('td:eq(0) input[type="checkbox"]')
+                            .prop('checked',true); //highlight the row that fires the event
+                    };
+
+
 					//return objects as functions
 					return {
 						getTableInstance : 		getTableInstance,
@@ -196,7 +219,7 @@ $(document).ready(function(){
 		})();
 /**********************************************************************************************************************************************************/	
 
-		var itemCartListModule=(function(){
+		var tableCartModule=(function(){
 					var tbl_item_cart;
 					
 					var bindEventHandlers=(function(){
@@ -207,10 +230,7 @@ $(document).ready(function(){
 
 								updateCachedData(this);	//update cached data even if "Enter" key is not pressed
 								setLineTotal( row , getLineTotal( row ) ); //update line total amount
-
-								
-								updateCachedData(row.find('td').eq(4)); //update cached data of total
-								
+                                reComputeFooterDetails();
 								formatEditableNumberCells( row );
 								
 							});
@@ -290,10 +310,14 @@ $(document).ready(function(){
 										});
 										
 										var _item=data[1].split('|');
+                                        $(row).find('td').eq(2).attr({
+                                            "data-product-id":_item[0],
+                                            "data-unit-id": _item[2]
+                                        });
+
 										$(row).find('td').eq(2).attr({
 											"align":"right",
-											"contenteditable":"true",
-											"data-product-id":_item[0]
+											"contenteditable":"true"
 										});
 										
 										$(row).find('td').eq(3).attr({
@@ -338,14 +362,14 @@ $(document).ready(function(){
                         });
 
                         //alert(_totalDiscount);
-                        $('#cell_total_discount').html('<strong class="text-navy">'+accounting.formatNumber(_totalDiscount,2)+'</strong>');
-                        $('#cell_total_invoice').html('<strong class="text-navy">'+accounting.formatNumber(_totalUndiscounted,2)+'</strong>');
+                        $('#cell_total_discount').html('<strong class="">'+accounting.formatNumber(_totalDiscount,2)+'</strong>');
+                        $('#cell_total_invoice').html('<strong class="">'+accounting.formatNumber(_totalUndiscounted,2)+'</strong>');
 
                         //compute total percentage
 
                         var _percentDisc=(_totalDiscount/_totalUndiscounted)*100;
-                        $('#cell_discount_percent').html('<strong class="text-navy">'+accounting.formatNumber(_percentDisc)+'%</strong>');
-                        $('#cell_net_amount').html('<strong>'+accounting.formatNumber(_totalInvoice,2)+'</strong>');
+                        $('#cell_discount_percent').html('<strong class="">'+accounting.formatNumber(_percentDisc)+'%</strong>');
+                        $('#cell_net_amount').html('<h3 style="color:red;">'+accounting.formatNumber(_totalInvoice,2)+'</h3>');
 
                     };
 					
@@ -419,7 +443,7 @@ $(document).ready(function(){
 /**********************************************************************************************************************************************************/
 
 		//all typehead modules
-		var typeHeadModules=(function(){
+		var typeHeadModule=(function(){
 				var typeHeadPLU;
 				
 				var initializeTypHead=(function(){
@@ -431,15 +455,15 @@ $(document).ready(function(){
 									source:response,
 									updater: function(data) {									;
 										
-										itemCartListModule.addRow([
+										tableCartModule.addRow([
 											"1",
-											data.id+"|"+data.description+" [ "+data.unit_name+" ]",
+											data.id+"|"+data.description+" [ "+data.unit_name+" ]|"+data.unit_id,
 											accounting.formatNumber(data.discount,2),
 											accounting.formatNumber(data.srp),
 											accounting.formatNumber(data.srp,2),
 											""
 										]);
-                                        itemCartListModule.reComputeFooterDetails();
+                                        tableCartModule.reComputeFooterDetails();
 
 										return ""; //specifies what would be going to display			
 									},
@@ -468,7 +492,7 @@ $(document).ready(function(){
 		})();
 /**********************************************************************************************************************************************************/
 		
-		var invoiceInfoModalModule=(function(){
+		var modalInvoiceInfoModule=(function(){
 				var _mode;		var _selectedID;	 var _selectedRow;		
 				
 				//binds all events of invoice modal
@@ -496,10 +520,10 @@ $(document).ready(function(){
 
 															var row=response.row[0];
 															var data=[row.record_info,row.invoice_no,row.txn_date,row.customer,row.seller,row.invoice_amount,row.is_active,""];
-															invoiceListModule.addRow(data); //add the info of recent invoice
-															invoiceListModule.lastPage(); //go to last page
+															tableInvoiceModule.addRow(data); //add the info of recent invoice
+															tableInvoiceModule.lastPage(); //go to last page
 				
-															itemCartListModule.removeRows(); //remove all rows of cart datatable
+															tableCartModule.removeRows(); //remove all rows of cart datatable
 															clearFields(); //clear fields
 															
 													})
@@ -527,9 +551,9 @@ $(document).ready(function(){
 															
 															var row=response.row[0];
 															var data=[row.record_info,row.invoice_no,row.txn_date,row.customer,row.seller,row.invoice_amount,row.is_active,""];													
-															invoiceListModule.updateRow(_selectedRow,data);
+															tableInvoiceModule.updateRow(_selectedRow,data);
 				
-															itemCartListModule.removeRows(); //remove all rows of cart datatable
+															tableCartModule.removeRows(); //remove all rows of cart datatable
 															clearFields(); //clear fields
 															
 															
@@ -597,7 +621,7 @@ $(document).ready(function(){
 									}
 								});
 								
-								var rowCount = itemCartListModule.getInstance().rows()[0].length;
+								var rowCount = tableCartModule.getInstance().rows()[0].length;
 								if(rowCount==0){ //if not item in cart
 									PNotify.removeAll();
 									new PNotify({
@@ -615,7 +639,7 @@ $(document).ready(function(){
 				//add new invoice
 				var createNewInvoice=function(){						
 					
-						var _cartTable=itemCartListModule.getInstance(); //intance of datatable					
+						var _cartTable=tableCartModule.getInstance(); //intance of datatable					
 						var serialData=$('#frm_details_top,#frm_details_bottom').serializeArray();
 						
 						_cartTable.rows().eq(0).each(function(index){
@@ -627,7 +651,8 @@ $(document).ready(function(){
 								{name:"prodid[]",value:data[1].split('|')[0]},
 								{name:"discount[]",value:accounting.unformat(data[2])},
 								{name:"unitprice[]",value:accounting.unformat(data[3])},
-								{name:"linetotal[]",value:accounting.unformat(data[4])}
+								{name:"linetotal[]",value:accounting.unformat(data[4])},
+                                {name:"unitid[]",value:data[1].split('|')[2]}
 							);
 							
 							
@@ -646,7 +671,7 @@ $(document).ready(function(){
 				
 				//update invoice
 				var updateInvoice=function(){
-						var _cartTable=itemCartListModule.getInstance(); //intance of datatable					
+						var _cartTable=tableCartModule.getInstance(); //intance of datatable					
 						var serialData=$('#frm_details_top,#frm_details_bottom').serializeArray();
 						
 						serialData.push({
@@ -662,7 +687,8 @@ $(document).ready(function(){
 								{name:"prodid[]",value:data[1].split('|')[0]},
 								{name:"discount[]",value:accounting.unformat(data[2])},
 								{name:"unitprice[]",value:accounting.unformat(data[3])},
-								{name:"linetotal[]",value:accounting.unformat(data[4])}
+								{name:"linetotal[]",value:accounting.unformat(data[4])},
+                                {name:"unitid[]",value:data[1].split('|')[2]}
 							);
 							
 						});
@@ -738,19 +764,22 @@ $(document).ready(function(){
 					
 					$.getJSON('SalesInvoiceController/ActionGetInvoiceCartItems',{id:data.invoice_id}, function(response){	
 						//console.log(response);
-						itemCartListModule.removeRows(); //remove rows
-						$.each(response,function(index,data){							
-							itemCartListModule.addRow([
+						tableCartModule.removeRows(); //remove rows
+						$.each(response,function(index,data){
+
+							tableCartModule.addRow([
 										accounting.formatNumber(data.item_qty),
 										data.item,
 										accounting.formatNumber(data.item_discount,2),
 										accounting.formatNumber(data.item_unit_price,2),
 										accounting.formatNumber(data.item_line_total,2),
 										""
-							]);				
+							]);
+
+                            tableCartModule.reComputeFooterDetails();//recompute details
 							
 						});
-						//itemCartListModule.addRow(["1",data.id+"|"+data.description,data.discount,data.srp,data.srp,""]);
+						//tableCartModule.addRow(["1",data.id+"|"+data.description,data.discount,data.srp,data.srp,""]);
 						
 					});
 					
@@ -776,6 +805,7 @@ $(document).ready(function(){
 						setSelectedID: 	setSelectedID,
 						getSelectedID: 	getSelectedID,
 						setSelectedRow: setSelectedRow
+
 						
 				}; //end of return value
 				
@@ -785,7 +815,7 @@ $(document).ready(function(){
 		
 /**********************************************************************************************************************************************************/
 
-        var periodInfoModalModule=(function(){
+        var modalPeriodModule=(function(){
 
             var bindEventHandlers=(function(){
 
@@ -799,7 +829,7 @@ $(document).ready(function(){
 
 
                     $('#btn_period').click(function(){
-                        invoiceListModule.showInvoiceHistoryList({
+                        tableInvoiceModule.showInvoiceHistoryList({
                             "start":    $('#period_modal input[name="start"]').val(),
                             "end":      $('#period_modal input[name="end"]').val()
                         });
@@ -824,7 +854,73 @@ $(document).ready(function(){
 
         })();
 
+/**********************************************************************************************************************************************************/
 
+        var tabInvoiceOtherInfoModule=(function(){
+
+            var bindEventHandlers=(function(){
+
+                $('#tab_invoice_heading a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    var target = $(e.target).attr("href") // activated tab
+                    $(target).find('textarea').first().focus();
+                });
+
+            })();
+
+        })();
+
+
+        var documentInvoiceInfoModule=(function(){
+
+            var writeContent=function(obj){
+                var details='<h4>Invoice No.</h4>'+
+                '<h4 class="text-navy">'+obj.invoice_no+'</h4>'+
+                '<span>To:</span>'+
+                '<address>'+
+                '<strong>'+obj.customer_name+'</strong><br>'+
+                obj.billing_address+'<br>'+
+                obj.email+'<br>'+
+                '<abbr title="Phone">P:</abbr> '+obj.primary_contact+
+                '</address>'+
+                '<p>'+
+                '<span><strong>Invoice Date:</strong> '+obj.invoice_date+'</span><br/>'+
+                '<span><strong>Due Date:</strong> '+obj.due_date+'</span>'+
+                '</p>';
+
+                $('#tbl_doc_invoice_details > tbody').html('<tr><td colspan="5"><center><img src="assets/img/ajax-loader-sm.gif"></center></td></tr>');
+                    $.getJSON('SalesInvoiceController/ActionGetInvoiceCartItems',{"id":obj.invoice_id}, function(response){
+
+                        $('a[href="#tab-2"]').find('span').html(''); //clear loading image on tab caption
+                        $('#tbl_doc_invoice_details > tbody').html(''); //clear loading image on table
+
+                        var _rowItems='';
+                        $.each(response,function(index,value){
+                            _rowItems+='<tr>'+
+                            '<td><div><strong>'+value.item.split('|')[1]+'</strong></div>'+
+                            '<small>One of the fastest CPU in the market right now.</small></td>'+
+                            '<td>10 pcs</td>'+
+                            '<td>$26.00</td>'+
+                            '<td>$5.98</td>'+
+                            '<td>$31,98</td>'+
+                            '</tr>';
+                        });
+
+                        $('#tbl_doc_invoice_details > tbody').html(_rowItems);
+
+                    }).fail(function(xhr){
+                        alert(xhr.responseText);
+                    });
+
+
+                $('#span_invoice_details').html(details);
+            };
+
+
+            return {
+                writeContent : writeContent
+            };
+
+        })();
 
 /**********************************************************************************************************************************************************/
 
@@ -837,8 +933,7 @@ $(document).ready(function(){
 
 
 
-
-		invoiceListModule.showInvoiceHistoryList({
+		tableInvoiceModule.showInvoiceHistoryList({
             "start" :   period.thisDay().start(),
             "end"   :   period.thisDay().end()
         });
@@ -851,9 +946,9 @@ $(document).ready(function(){
 		
 		//new invoice	
 		$('#btn_new_invoice').click(function(){
-			invoiceInfoModalModule.setMode("new");
-			itemCartListModule.removeRows(); //remove all rows of cart datatable
-			invoiceInfoModalModule.clearFields(); //clear fields
+			modalInvoiceInfoModule.setMode("new");
+			tableCartModule.removeRows(); //remove all rows of cart datatable
+			modalInvoiceInfoModule.clearFields(); //clear fields
 		});
 		
 		//
@@ -877,7 +972,7 @@ $(document).ready(function(){
             var _btnTrash='<button class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 			
 			
-			invoiceListModule.createToolBarButton(_btnRefresh+_btnActive+_btnInactive+_btnTrash);
+			tableInvoiceModule.createToolBarButton(_btnRefresh+_btnActive+_btnInactive+_btnTrash);
 			
 			
 			var _btnApplyGlobalDiscount='<button style="margin-right:3px;" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Apply Global Discount"><i class="fa fa-refresh"></i> Apply Global Discount</button>';
